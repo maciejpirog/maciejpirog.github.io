@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<a href="index.html">home</a> ||
+<strong>overview</strong> ||
+<a href="example.html">code examples</a> ||
+<a href="documentation.html">documentation</a> ||
+<a href="download.html">download</a> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Overview of Fry</h1>
+
+<div class="text">
+This document is a crash course in Fry programming. Each section describes how Fry deals with concepts known from the OO and functional paradigms.
+<ul>
+<li><a href="#inshort">In short</a></li>
+<li><a href="#objects">Objects</a></li>
+<li><a href="#fields">Fields</a></li>
+<li><a href="#updates">Updates</a></li>
+<li><a href="#inheritance">Inheritance</a></li>
+<li><a href="#sideeffects">Side-effects and let expressions</a></li>
+<li><a href="#constructors">Constructors</a></li>
+<li><a href="#lambda">Lambda-expressions</a></li>
+</ul>
+</div>
+
+
+<h2 id="inshort">In short</h2>
+
+<div class="text">
+Fry is:
+
+<ul>
+<li>
+<strong>Object-oriented</strong>: The basic building blocks of Fry programs are objects with fields and inheritance. 
+<li>
+<strong>Declarative</strong>: Objects are stateless, which means that you cannot modify them on the fly. Once created, an object stays the same for eternity.
+<li>
+<strong>Classless</strong>: There is no notion of a class. Dynamic dispatch is interface-based.
+<li>
+<strong>Functional</strong>: You can utilise first-class lambda-expressions (but not algebraic datatypes, though).
+<li>
+<strong>Dynamically typed</strong>: You can write idiotic expressions like "1 + true" and nobody will complain until it's too late.
+</ul>
+
+</div>
+
+<h2 id="objects">Objects</h2>
+
+<div class="text">
+Fry is an object-oriented language, but it is also declarative, which in this case means that objects are non-mutable values. An <strong>object</strong> is defined as a collection of labelled <strong>fields</strong>, like this:
+</div>
+
+<div class="fry">[ <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
+  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height) ]
+</div>
+
+<div class="text">
+Note that there is no distinction between fields and methods. Every field can access the whole object (by default, with the distinguished identifier this), as in the bmi field in the example above. <strong>Accessing</strong> a field is simply extraction of the element of the object, as in the following example:
+</div>
+
+<div class="fry">[ <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
+  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height) ].bmi
+</div>
+
+<div class="text">
+The expression above is equal to 27.755 (overweight).
+</div>
+
+<div class="text">
+The object is bound to the this identifier as late as possible. This means that the value of a field is calculated (and side-effects, if any, performed) every time the field is accessed.
+</div>
+
+<div class="text">
+We can create a named object with the <span class="keyword">object</span> keyword:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Person</span>
+[
+  <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
+  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height)
+]
+
+Person.bmi
+</div>
+
+<div class="text">
+Every Fry program is an expression that consists of a (possibly empty) list of definitions of named objects, and the actual expression.
+</div>
+
+<div class="text">
+All fields of an object have to be given a value, and these values are not mutable. Fry is <strong>classless</strong>: there is no notion of classes and their instances - everything is an object.
+</div>
+
+<div class="text">
+Objects can be nested in the obvious way:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Person</span>
+[
+  <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
+  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height),
+  <span class="emphasis">sounds</span> <span class="select">=</span> [<span class="emphasis">happy</span><span class="select">=</span><span class="literal">"yay"</span>, <span class="emphasis">sad</span><span class="select">=</span><span class="literal">"boo"</span>]
+]
+
+Person.sounds.happy
+</div>
+
+<div class="text">
+The expression above evaluates to "yay".
+</div>
+
+<h2 id="fields">Fields</h2>
+
+<div class="text">
+Every field can access the whole object, dubbed "this", as in the "bmi" field in the previous examples. However, in the case of nested objects, we sometimes need to be explicit about which object we refer to. We can rename "this" to another identifier with the "@" (at) operator:
+</div>
+
+<div class="fry">[ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
+  <span class="emphasis">foo</span><span class="select">@</span>o <span class="select">=</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span>, <span class="emphasis">bar</span><span class="select">@</span>i <span class="select">=</span> o.x + i.x ]
+].foo.bar
+</div>
+
+<div class="text">
+In the above, the identifier "o" is bound to the outer object, while "i" is bound to the inner object. The entire expression evaluates to 5.
+</div>
+
+<div class="text">
+If we rename the current object identifier, the default "this" denotes the inner-most non-renamed object:
+</div>
+
+<div class="fry">[ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
+  <span class="emphasis">foo</span> <span class="select">=</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span>, <span class="emphasis">bar</span><span class="select">@</span>i <span class="select">=</span> <span class="emphasis2">this</span>.x ]
+].foo.bar
+</div>
+
+<div class="text">
+The above evaluates to 2.
+</div>
+
+<div class="text">
+We can skip naming the current object and keep "this" denoting the outer object with the "_" (wildcard) identifier:
+</div>
+
+<div class="fry">[ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
+  <span class="emphasis">foo</span> <span class="select">=</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span>, <span class="emphasis">bar</span><span class="select">@</span>_ <span class="select">=</span> <span class="emphasis2">this</span>.x ]
+].foo.bar
+</div>
+
+<div class="text">
+The above also evaluates to 2.
+</div>
+
+<h2 id="updates">Updates</h2>
+
+<div class="text">
+We cannot modify an existing object. That is why there is no notion of a variable in Fry, as objects, once created, do not vary in time. However, we can create new objects by altering existing ones. The syntax to achieve this is as follows:
+</div>
+
+<div class="fry">obj{f<span class="select"> = </span>expr}
+</div>
+
+<div class="text">
+The code above evaluates to an object "obj" with the field "f" overwritten with the value of the expression "expr". For example:
+</div>
+
+<div class="fry">[<span class="emphasis">x</span><span class="select">=</span><span class="literal">1</span>, <span class="emphasis">y</span><span class="select">=</span><span class="literal">2</span>]{x<span class="select">=</span><span class="literal">7</span>}
+</div>
+
+<div class="text">
+The expression above evaluates to the object "[x=7, y=2]".
+</div>
+
+
+<h3>Nested updates</h3>
+
+<div class="text">
+Be careful with nested field updates. Consider the code below:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">c</span> [ <span class="emphasis">x</span> <span class="select">=</span> [ <span class="emphasis">y</span> <span class="select">=</span> [ <span class="emphasis">z</span> <span class="select">=</span> <span class="literal">1</span> ] ] ]
+c.x.y{z<span class="select">=</span><span class="literal">7</span>}
+</div>
+
+<div class="text">
+It evaluates to "[z=7]" and not "[x=[y=[z=7]]]" as one might expect (for example, when one's intuition is Java's "c.x.y.z=7"). The reason is that "." and "{...}" have the same precedence and both are left-associative. This means that the expression above is equivalent to:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">c</span> [ <span class="emphasis">x</span> <span class="select">=</span> [ <span class="emphasis">y</span> <span class="select">=</span> [ <span class="emphasis">z</span> <span class="select">=</span> <span class="literal">1</span> ] ] ]
+(c.x.y){z<span class="select">=</span><span class="literal">7</span>}
+</div>
+
+<div class="text">
+The expression in the parenthesis is obviously equal to "[z=1]", so the entire expression evaluates to "[z=1]{z=7}", which is equal to "[z=7]". If you want "c" with the field "x.y.z" updated, use the following syntax:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">c</span> [ <span class="emphasis">x</span> <span class="select">=</span> [ <span class="emphasis">y</span> <span class="select">=</span> [ <span class="emphasis">z</span> <span class="select">=</span> <span class="literal">1</span> ] ] ]
+c{x.y.z<span class="select">=</span><span class="literal">7</span>}
+</div>
+
+<div class="text">
+The above evaluates to "[x=[y=[z=7]]]".
+</div>
+
+<h3>Current object</h3>
+
+<div class="text">
+Note that by default the "this" identifier is bound to the inner-most object declaration and not the object that is updated. For example, consider the following code:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">next</span> <span class="select">=</span> A,
+  <span class="emphasis">foo</span> <span class="select">=</span> <span class="emphasis2">this</span>{next <span class="select">=</span> <span class="emphasis2">this</span>}
+]
+</div>
+
+<div class="text">
+It is equivalent to
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">next</span> <span class="select">=</span> A,
+  <span class="emphasis">foo</span><span class="select">@</span>a <span class="select">=</span> a{next<span class="select">@</span>b <span class="select">=</span> a}
+]
+</div>
+
+<div class="text">
+rather than
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">next</span> <span class="select">=</span> A,
+  <span class="emphasis">foo</span><span class="select">@</span>a <span class="select">=</span> a{next<span class="select">@</span>b <span class="select">=</span> b}
+]
+</div>
+
+<div class="text">
+If you mean the latter, you have to explicitly name the object within the update body using "@" (as done with "@b" in the example).
+</div>
+
+<h3>Evaluation strategy</h3>
+
+<div class="text">
+The value of the expression that is substituted for a field is evaluated at the moment of the update. For example, the following expression evaluates to 5, since the body of the field "y" is substituted with 5:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
+  <span class="emphasis">y</span> <span class="select">=</span> <span class="literal">0</span>
+]
+
+A{y<span class="select">@</span>t <span class="select">=</span> t.x + <span class="literal">3</span>}{x <span class="select">=</span> <span class="literal">10</span>}.y
+</div>
+
+<div class="text">
+However, we can update the field in a lazy fashion, so that the body is not evaluated at the point of the update, but at the field access. This means that the object is bound to "this" as late as possible. We achieve this by annotating the body of the update with the "~" (tilde) operator. For example, in the following expression "y" is substituted with "y@t = t.x + 3", and the value of "x" is accessed after it is updated with 10, so the entire expression evaluates to 13:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
+  <span class="emphasis">y</span> <span class="select">=</span> <span class="literal">0</span>
+]
+
+A{<span class="select">~</span>y<span class="select">@</span>t <span class="select">=</span> t.x + <span class="literal">3</span>}{x <span class="select">=</span> <span class="literal">10</span>}.y
+</div>
+
+<h2 id="inheritance">Inheritance</h2>
+
+<div class="text">
+Fry supports differential, circular inheritance. An object A can extend another object B. Specifically, the object A inherits all the fields of B. For example:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">B</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span> ]
+<span class="keyword">object</span> <span class="emphasis3">A</span> <span class="keyword">extends</span> B [ <span class="emphasis">y</span> <span class="select">=</span> <span class="literal">2</span> ]
+
+A.x + A.y
+</div>
+
+<div class="text">
+The above evaluates to 5.
+</div>
+
+<div class="text">
+A B-field can overwrite an A-field if the labels coincide (to form what is known elsewhere as a "virtual method"). Objects are bound to "this" identifiers dynamically and as late as possible, so, for example, the following code evaluates to 7:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">6</span>,
+  <span class="emphasis">getSix</span> <span class="select">=</span> <span class="emphasis2">this</span>.x
+]
+
+<span class="keyword">object</span> <span class="emphasis3">B</span> <span class="keyword">extends</span> A [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">7</span> ]
+
+B.getSix
+</div>
+
+<div class="text">
+The original A-field can still be accessed with the "super" identifier. For example, the expression below evaluates to 5:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span> ]
+<span class="keyword">object</span> <span class="emphasis3">B</span> <span class="keyword">extends</span> A [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span> ]
+
+B.x + B.<span class="emphasis2">super</span>.x
+</div>
+
+<div class="text">
+The identifier "super" can be used also within the definition of a field:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span> ]
+
+<span class="keyword">object</span> <span class="emphasis3">B</span> <span class="keyword">extends</span> A
+[
+  <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
+  <span class="emphasis">sum</span> <span class="select">=</span> <span class="emphasis2">this</span>.x + <span class="emphasis2">this</span>.<span class="emphasis2">super</span>.x
+]
+
+B.sum
+</div>
+
+<div class="text">
+No surprises here, the above evaluates to 5.
+</div>
+
+<div class="text">
+The <span class="keyword">object</span> definitions are mutually recursive. Hence, we can easily explore circular inheritance. For example, the code below evaluates to 1.
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span> <span class="keyword">extends</span> B [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">0</span> ]
+<span class="keyword">object</span> <span class="emphasis3">B</span> <span class="keyword">extends</span> A [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">1</span> ]
+
+A.<span class="emphasis2">super</span>.<span class="emphasis2">super</span>.<span class="emphasis2">super</span>.x
+</div>
+
+<div class="text">
+Also, we can define a superobject of an object directly, without the <span class="keyword">extends</span> keyword, by specifying the "super" field:
+</div>
+
+<div class="fry">[ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">3</span>, <span class="emphasis">super</span> <span class="select">=</span> [ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span> ] ]
+</div>
+
+<h2 id="sideeffects">Side-effects and let expressions</h2>
+
+<div class="text">
+Fry is a declarative "everything-is-an-expression" language, but the expressions can execute side effects. For example:
+</div>
+
+<div class="fry">print <span class="literal">"hello world!"</span>
+</div>
+
+<div class="text">
+We compose two expressions with the ";" operator. Its semantics is: evaluate the left-hand side argument (possibly with side-effects), throw away the result, and evaluate the right-hand side argument.
+</div>
+
+<div class="fry">print <span class="literal">"hello "</span>; print <span class="literal">"world!"</span>
+</div>
+
+<div class="text">
+The evaluation strategy for Fry is <strong>call-by-name</strong>, that is, fields are evaluated when they are accessed. For example, the following program outputs the string "fishfishfish":
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">foo</span> <span class="select">=</span> print <span class="literal">"fish"</span>; <span class="emphasis2">this</span>
+]
+
+A.foo.foo.foo
+</div>
+
+<div class="text">
+If we want to pre-evaluate an expression in the <strong>call-by-value</strong> fashion, we can use the <span class="keyword">let</span> construction:
+</div>
+
+<div class="fry"><span class="keyword">let</span> x <span class="keyword">be</span> print <span class="literal">6</span>
+<span class="keyword">in</span>
+  x;x;x
+</div>
+
+<div class="text">
+The program above first evaluates "x" (which results in printing out the number 6 as a side-effect). Then, only the final value is used in the expression "x;x;x". This means that the program above prints out the number 6 only once!
+</div>
+
+<div class="text">
+There can be more than one expression defined in a <span class="keyword">let</span> statement. They are mutually recursive, evaluated in the order of appearance in the call-by-name fashion. Only when each of them is reduced to a normal form, they are supplied to the <span class="keyword">in</span> expression in the call-by-value fashion. For example:
+</div>
+
+<div class="fry"><span class="keyword">let</span> x <span class="keyword">be</span> print <span class="literal">6</span>
+<span class="keyword">and</span> y <span class="keyword">be</span> x;x;x
+<span class="keyword">in</span> y
+</div>
+
+<div class="text">
+The program above first evaluates "x" (which results in printing out the number 6 once), and then it evaluates "y" (which evaluates "x" three times, so the number 6 is printed three more times). Then, in the <span class="keyword">in</span> expression, only the final value is used. In toto, the number 6 is printed out four times!
+</div>
+
+<div class="text">
+We can delay the evaluation of an expression in a <span class="keyword">let</span> block by enclosing the value as a field of an object (a <i>thunk</i>). The following program will print out the number 6 three times:
+</div>
+
+<div class="fry"><span class="keyword">let</span> x <span class="keyword">be</span> [ <span class="emphasis">force</span> <span class="select">=</span> print <span class="literal">6</span> ]
+<span class="keyword">and</span> y <span class="keyword">be</span> x.force; x.force; x.force
+<span class="keyword">in</span> y
+</div>
+
+<h2 id="constructors">Constructors</h2>
+
+<div class="text">
+An object is a record of initialised fields. However, one sometimes needs to perform a bit more sophisticated actions upon the creation of the object, such as resource allocation. For that, we use constructors. They are also used when creating an object in a dynamic fashion, which is a common pattern when one uses inheritance (see, for example, the AVL trees example). The constructor of an object is a field under the label "new" that executes the additional functionality and return a properly initialised object. For example:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">foo</span> <span class="select">=</span> <span class="literal">1</span>,
+  <span class="emphasis">new</span> <span class="select">=</span> print <span class="literal">"new object A created"</span>; <span class="emphasis2">this</span>
+]
+
+A.new.foo
+</div>
+
+<div class="text">
+Constructors are especially useful in combination with lambda-expressions, which gives you a way to supply additional arguments to the constructor.
+</div>
+
+<div class="text">
+Also note that "new" is not in any way special in the semantics of Fry (unlike "super"). It's just a convention.
+</div>
+
+<h2 id="lambda">Lambda-expressions</h2>
+
+<div class="text">
+Fry supports first-class lambda-expressions. The syntax is inspired by Haskell:
+</div>
+
+<div class="fry">(<span class="select">\</span>f x <span class="select">-></span> f (f x)) (<span class="select">\</span>x <span class="select">-></span> x) <span class="literal">42</span>
+</div>
+
+<div class="text">
+This way, we can define fields with arguments:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Counter</span>
+[
+  <span class="emphasis">sum</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">add</span> <span class="select">=</span> <span class="select">\</span>n <span class="select">-></span> <span class="emphasis2">this</span>{sum <span class="select">=</span> <span class="emphasis2">this</span>.sum + n}
+]
+
+(Counter.add <span class="literal">4</span>).add <span class="literal">7</span>
+</div>
+
+<div class="text">
+There is a syntactic sugar for such fields. We can rewrite the definition of "add" simply as:
+</div>
+
+<div class="fry"><span class="emphasis">add</span> n <span class="select">=</span> <span class="emphasis2">this</span>{sum <span class="select">=</span> <span class="emphasis2">this</span>.sum + n}
+</div>
+
+<div class="text">
+We can define fields with more than one argument, too:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Counter</span>
+[
+  <span class="emphasis">sum</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">add</span> m n <span class="select">=</span> <span class="emphasis2">this</span>{sum <span class="select">=</span> <span class="emphasis2">this</span>.sum + m + n}
+]
+
+(Counter.add <span class="literal">4 6</span>).add <span class="literal">7 3</span>
+</div>
+
+<div class="text">
+Note that lambda-expressions are just syntactic sugar:
+</div>
+
+<div class="math"><span class="select">\</span>x <span class="select">-></span> p(x)  <span class="meta">~~~&gt;</span>  [<span class="emphasis">arg</span> <span class="select">=</span> [], <span class="emphasis">val</span><span class="select">@</span>x <span class="select">=</span> p(x.arg)]
+p q         <span class="meta">~~~&gt;</span>  p{arg<span class="select"> = </span>q}.val
+</div>
+
+<div class="text">
+Since the update body is evaluated at the moment of the update, the reduction strategy for lambda-expressions is <strong>call-by-value</strong>. This means that at the application of a function to an argument, we first evaluate the arguments (in left-to-right order, beginning with the head of the application). For example, the following program prints out "1234":
+</div>
+
+<div class="fry">(print <span class="literal">1</span>; <span class="select">\</span>x y <span class="select">-></span> print <span class="literal">4</span>) (print <span class="literal">2</span>) (print <span class="literal">3</span>)
+</div>
+
+</div>
+</body>
+

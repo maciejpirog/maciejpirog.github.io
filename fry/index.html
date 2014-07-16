@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<strong>home</strong> ||
+<a href="overview.html">overview</a> ||
+<a href="example.html">code examples</a> ||
+<a href="documentation.html">documentation</a> ||
+<a href="download.html">download</a> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Fry's home</h1>
+
+<div class="text">
+Welcome to the homepage of <strong>Fry</strong>, a declarative object-oriented programming language!
+</div>
+
+<h2>About</h2>
+
+<div class="text">
+Fry is an experimental language that combines the best features of object-oriented (anybody?) and declarative paradigms. The slogans are: "<strong>panobjectivity</strong>" - everything is an object - which gives you the lightweightness feeling of <a href="http://www.squeak.org/" target="_blank">Smalltalk</a> (and their descendants such as <a href="http://www.ruby-lang.org/" target="_blank">Ruby</a>), and "<strong>less is more</strong>" - no mutable data structures! - which gives you the true declarative lightweightness of pure functional programming (as in <a href="http://www.haskell.org/" target="_blank">Haskell</a>).
+</div>
+
+<div class="text">
+The theoretical foundation of Fry is Martín Abadi and Luca Cardelli's <a href="http://link.springer.com/chapter/10.1007%2F3-540-57880-3_1" target="_blank">calculus of primitive objects</a> augmented with base types, side-effects, and inheritance. Fry comes equipped with a full formal <a href="documentation.html">operational semantics</a>.
+</div>
+
+<div class="text">
+Note that Fry is in its infancy. A lot of changes to the language and surroundings are bound to happen, some of them revolutionary, all of them unpredictable.
+</div>
+
+<h2>A snippet</h2>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Nil</span> [ <span class="emphasis">map</span> f <span class="select">=</span> <span class="emphasis2">this</span> ]
+
+<span class="keyword">object</span> <span class="emphasis3">Cons</span>
+[
+  <span class="emphasis">head</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">tail</span> <span class="select">=</span> Nil,
+  <span class="emphasis">new</span> h t <span class="select">=</span> <span class="emphasis2">this</span>{head <span class="select">=</span> h}{tail <span class="select">=</span> t},
+  <span class="emphasis">map</span> f <span class="select">=</span> <span class="emphasis2">this</span>{head <span class="select">=</span> f <span class="emphasis2">this</span>.head}{tail <span class="select">=</span> <span class="emphasis2">this</span>.tail.map f}
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Many</span>
+[
+  <span class="emphasis">list</span> t <span class="select">=</span> t,
+  <span class="emphasis">toList</span> <span class="select">=</span> <span class="emphasis2">this</span>.list Nil,
+  <span class="comment">% "arg" and "val" are special fields that enable
+  % the application syntax a la functional programming</span>
+  <span class="emphasis">arg</span> <span class="select">=</span> [],
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{list t <span class="select">=</span> <span class="emphasis2">this</span>.list (Cons.new <span class="emphasis2">this</span>.arg t)}
+]
+
+<span class="keyword">let</span> square <span class="keyword">be</span> <span class="select">\</span>x <span class="select">-></span> x * x <span class="keyword">in</span>
+
+(Many <span class="literal">1 2 3 4 5 6 7 8</span>).toList.map square
+
+<span class="comment">% this program evaluates to the list 1 4 9 16 25 36 49 64</span>
+</div>
+
+
+
+
+</div>
+</body>

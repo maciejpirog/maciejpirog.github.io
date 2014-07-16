@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<a href="index.html">home</a> ||
+<a href="overview.html">overview</a> ||
+<a href="example.html">code examples</a> ||
+<strong>documentation</strong> ||
+<a href="download.html">download</a> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Documentation</h1>
+
+<div class="text">
+<nav>
+<a href="documentation.html">welcome</a> ||
+<strong>core</strong> ||
+<a href="doc-sugar.html">syntactic sugar</a>
+</nav>
+</div>
+
+<div class="text">
+Core Fry is the heart of the Fry language. Everything else is just syntactic sugar. This document describes the syntax and formal semantics of Core Fry. Though it is not "copy-and-paste-to-Coq" formal, on should encounter no problems trying to endow this scribble with full mathematical rigour.
+<ul>
+<li><a href="#syntax">Syntax</a></li>
+<li><a href="#semantics">Semantics</a></li>
+</ul>
+</div>
+
+<h2 id="syntax">Syntax</h2>
+
+<div class="text">
+The abstract syntax of the Core Fry is given by the following grammar:
+</div>
+
+<div class="math"><span class="nonterm">expr</span> <span class="meta">::=</span> <span class="nonterm">expr</span> <span class="nonterm">op</span> <span class="nonterm">expr</span>            <span class="comment">% operator</span>
+          <span class="meta">|</span>  [ <span class="nonterm">field</span> , ... , <span class="nonterm">field</span> ]     <span class="comment">% object</span>
+          <span class="meta">|</span>  <span class="nonterm">expr</span> .label                     <span class="comment">% access</span>
+          <span class="meta">|</span>  <span class="nonterm">expr</span> { <span class="nonterm">field</span> }              <span class="comment">% update</span>
+          <span class="meta">|</span>  <span class="keyword">let</span> <span class="nonterm">defs</span> <span class="keyword">in</span> <span class="nonterm">expr</span>            <span class="comment">% let</span>
+          <span class="meta">|</span>  print <span class="nonterm">expr</span>                      <span class="comment">% side-effect</span>
+          <span class="meta">|</span>  ident <span class="meta">|</span> <span class="literal">123</span> <span class="meta">|</span> <span class="literal">"abc"</span>                 <span class="comment">% base</span>
+<span class="nonterm">field</span> <span class="meta">::=</span> <span class="meta">[</span><span class="select">~</span><span class="meta">]</span> label <span class="meta">[</span><span class="select">@</span> ident<span class="meta">]</span> <span class="select">=</span> <span class="nonterm">expr</span>
+<span class="nonterm">defs</span> <span class="meta">::=</span> <span class="nonterm">def</span> <span class="keyword">and</span> ... <span class="keyword">and</span> <span class="nonterm">def</span>
+<span class="nonterm">def</span> <span class="meta">::=</span> ident <span class="keyword">be</span> <span class="nonterm">expr</span>
+<span class="nonterm">op</span> <span class="meta">::=</span> + <span class="meta">|</span> - <span class="meta">|</span> * <span class="meta">|</span> ...
+</div>
+
+<div class="text">
+We assume that objects have zero or more fields, and let constructs at least one definition. There is only one field in each object stored under a label, for example the definition <span class="smallmath">[l<span class="select">=</span>a,l<span class="select">=</span>b]</span> is ill-formed.
+</div>
+
+<div class="text">
+A field definition without the "@" operator are construed dependently on the context. In a definition of an object, a field definition <span class="smallmath">f <span class="select">=</span> e</span> means <span class="smallmath">f<span class="select">@</span>this <span class="select">=</span> e</span>. In the update construct it means <span class="smallmath">f<span class="select">@</span>x <span class="select">=</span> e</span> for a fresh variable <span class="smallmath">x</span>.
+</div>
+
+
+<div class="text">
+The concrete syntax is the abstract syntax with parenthesis. To solve ambiguity, we assume the natural operator precedence. The "access" and "update" constructs have higher precedence than operators, for instance <span class="smallmath">a + b.l</span> is equivalent to <span class="smallmath">a + (b.l)</span>. The "let" construct has lower precedence than operators, for example <span class="smallmath"><span class="keyword">let</span> x <span class="keyword">be</span> e <span class="keyword">in</span> x + y</span> is equivalent to <span class="smallmath"><span class="keyword">let</span> x <span class="keyword">be</span> e <span class="keyword">in</span> (x + y)</span>.
+</div>
+
+<h2 id="semantics">Semantics</h2>
+
+<div class="text">
+Below, you will find a big-step operational semantics of Core Fry. It consists of two mutually-recursive relations:
+</div>
+
+<div class="text">
+<span class="smallmath"><span class="monad">G</span> e <span class="meta">==></span> <span class="monad">G'</span> <span class="value">v</span> </span> means that in the state of the world (that is, an environment that is modified by side-effects) <span class="smallmath"><span class="monad">G</span></span>, the expression <span class="smallmath">e</span> evaluates to the value <span class="smallmath"><span class="value">v</span></span> in the state of the world <span class="smallmath"><span class="monad">G'</span></span>. Values are objects and literals (base values except for identifiers).</li>
+</div>
+
+<div class="text">
+<span class="smallmath"><span class="monad">G</span> obj <span class="meta">~~(</span>l<span class="meta">)~~></span> <span class="monad">G'</span> l<span class="select">@</span>t <span class="select">=</span> f </span> means that in the object <span class="smallmath">obj</span>, the field under the label <span class="smallmath">l</span> is <span class="smallmath">l<span class="select">@</span>t <span class="select">=</span> f</span>.
+</div>
+
+<div class="text">
+Rules are of the following form:
+</div>
+
+<div class="math"><span class="meta">Premise<sub>1</sub></span>
+<span class="meta">...</span>
+<span class="meta">Premise<sub>n</sub></span>
+<span class="meta">-------------</span>
+<span class="meta">Conclusion</span>
+</div>
+
+<div class="text">
+The reading of such a rule is that if all of the premises hold, the conclusion also holds. The relations are defined as the smallest relations that satisfy all the rules. If there is no <span class="smallmath"><span class="value">v</span></span> such that <span class="smallmath"><span class="monad">G</span> e <span class="meta">==></span> <span class="monad">G'</span> <span class="value">v</span></span>, it means that the evaluation of the expression <span class="smallmath">e</span> either diverges or ends up with a runtime error.
+</div>
+
+<div class="text">
+Most of the rules do not interact directly with the environment. That is why we introduce a short for our notation if none of the premises nor the conclusion interact directly with the environment, that is the rule is of the following form:
+</div>
+
+<div class="math"><span class="monad">G<sub>0</sub></span> e<sub>1</sub> <span class="meta">==></span> <span class="monad">G<sub>1</sub></span> <span class="value">v<sub>1</sub></span>
+<span class="monad">G<sub>1</sub></span> e<sub>2</sub> <span class="meta">==></span> <span class="monad">G<sub>2</sub></span> <span class="value">v<sub>2</sub></span>
+<span class="meta">...</span>
+<span class="monad">G<sub>n-1</sub></span> e<sub>n</sub> <span class="meta">==></span> <span class="monad">G<sub>n</sub></span> <span class="value">v<sub>n</sub></span>
+<span class="meta">-----------------------</span>
+<span class="monad">G<sub>0</sub></span> e <span class="meta">==></span> <span class="monad">G<sub>n</sub></span> <span class="value">v</span>
+</div>
+
+<div class="text">
+In such a case, we simply omit the environment annotations <span class="smallmath"><span class="monad">G</span></span>.
+</div>
+
+<div class="text">
+For an expression <span class="smallmath">e</span>, we denote the capture-avoiding substitution of a term <span class="smallmath">t</span> for a variable <span class="smallmath">x</span> as <span class="smallmath">e<span class="env">t/x</span></span>. We can substitute a number of variables at a time: <span class="smallmath">e<span class="env">t<sub>i</sub>/x<sub>i</sub></span><sub>i=1..k</sub></span>.
+</div>
+
+<div class="text">
+Though we use a list-like notation for objects, we think of them as unordered maps from labels to fields. The definitions below use a Prolog-like notation to pattern-match objects: <span class="smallmath">[ f<span class="select">@</span>t <span class="select">=</span> e | T ]</span> denotes an object in which a field <span class="smallmath"><span class="select">@</span>t <span class="select">=</span> e</span> is stored under the label  <span class="smallmath">f</span>, while <span class="smallmath">T</span> denotes the rest of the fields.
+</div>
+
+<div class="text">
+The rules defining the two relations are as follows:
+</div>
+
+<h3>Access</h3>
+
+<div class="text">
+A field of an object can be given in the definition of the object or it can be one of the fields of its superobject (or the superobject's superobject, and so on). Every object keeps its superobject as a field under the (distinguished) label "super". Hence, to find a definition of a field, we need to dereference the superobject and iterate this process. It is captured by the <span class="smallmath"><span class="meta">~~(</span>l<span class="meta">)~~></span></span> relation:
+</div>
+
+<div class="math">[ l<span class="select">@</span>t <span class="select">=</span> g | T ] <span class="meta">~~(</span>l<span class="meta">)~~></span> l<span class="select">@</span>t <span class="select">=</span> f
+</div>
+
+<div class="math">g <span class="meta">==></span> <span class="value">v</span>
+<span class="value">w</span> <span class="meta">~~(</span>l<span class="meta">)~~></span> l<span class="select">@</span>t <span class="select">=</span> f
+<span class="meta">--------------------------------------</span> <span class="meta">(</span>l <span class="meta">not defined in</span> T<span class="meta">)</span>
+[ super<span class="select">@</span>_ <span class="select">=</span> g | T ] <span class="meta">~~(</span>l<span class="meta">)~~></span> l<span class="select">@</span>t <span class="select">=</span> f 
+</div>
+
+<div class="text">
+Having extracted the field definition, we substitute the entire object for the current object identifier specified with the "@" operator:
+</div>
+
+<div class="math">e <span class="meta">==></span> <span class="value">v</span>
+<span class="value">v</span> <span class="meta">~~(</span>l<span class="meta">)~~></span> l<span class="select">@</span>t <span class="select">=</span> f
+f<span class="env"><span class="value">v</span> / t</span> <span class="meta">==></span> <span class="value">w</span>
+<span class="meta">--------------</span>
+e . l <span class="meta">==></span> <span class="value">w</span>
+</div>
+
+<h3>Update</h3>
+
+<div class="text">
+To update a field, we simply put the definition in the collection of fields of the object. If there already is a field under the specified label, we simply forget it. Note that if the field is in the superobject, it is not overwritten there, and still can be accest via the "super" field.
+</div>
+
+<div class="math">e <span class="meta">==></span> [ T ]
+<span class="meta">------------------------------------</span>
+e { l<span class="select">@</span>t <span class="select">=</span> g } <span class="meta">==></span> [ l<span class="select">@</span>t <span class="select">=</span> g | T ]
+</div>
+
+<div class="text">
+In the above, <span class="smallmath">[ T ]</span> denotes any object. If it already has a field under the label <span class="smallmath">l</span>, that is <span class="smallmath">[ T ] = [ l<span class="select">@</span>r <span class="select">=</span> h | T' ]</span>, by <span class="smallmath">[ l<span class="select">@</span>t <span class="select">=</span> g | T ]</span> we mean <span class="smallmath">[ l<span class="select">@</span>t <span class="select">=</span> g | T' ]</span>.
+</div>
+
+<h3>Let</h3>
+
+<div class="text">
+The "let" construct is important to control the order of evaluation. The defined expressions are evaluated first, and the result is substituted in the "in" expression. However, the defined expressions can be mutually recursive, and the recursion is solved in the call-by-name manner. We can achieve this by reusing the way objects are handled: the values of fields are evaluated only when needed.
+</div>
+
+<div class="math"><span class="meta">let</span> obj <span class="meta">=</span> [x<sub>1</sub><span class="select">@</span>t<span class="select">=</span>e<sub>1</sub><span class="env">t.x<sub>i</sub>/x<sub>i</sub></span><sub>i=1..n</sub> , ... , x<sub>n</sub><span class="select">@</span>t<span class="select">=</span>e<sub>n</sub><span class="env">t.x<sub>i</sub>/x<sub>i</sub></span><sub>i=1..n</sub>]
+e<sub>1</sub><span class="env">obj.x<sub>i</sub>/x<sub>i</sub></span><sub>i=1..n</sub> <span class="meta">==></span> <span class="value">v<sub>1</sub></span>
+<span class="meta">...</span>
+e<sub>n</sub><span class="env">obj.x<sub>i</sub>/x<sub>i</sub></span><sub>i=1..n</sub> <span class="meta">==></span> <span class="value">v<sub>n</sub></span>
+b<span class="env"><span class="value">v<sub>i</sub></span>/x<sub>i</sub></span><sub>i=1..n</sub> <span class="meta">==></span> <span class="value">v</span>
+<span class="meta">-----------------------------------------------</span>
+<span class="keyword">let</span> x<sub>1</sub> <span class="keyword">be</span> e<sub>1</sub> <span class="keyword">and</span> ... <span class="keyword">and</span> x<sub>n</sub> <span class="keyword">be</span> e<sub>n</sub> <span class="keyword">in</span> b <span class="meta">==></span> <span class="value">v</span>
+</div>
+
+<h3>Side-effects</h3>
+
+<div class="text">
+For simplicity, we assume that there is only one kind of side-effects: printing out a value on the console. So, the world is modelled as a string with "++" denoting concatenation. In the definition below, we assume implicit conversion from a value to its string representation.
+</div>
+
+<div class="math"><span class="monad">G</span> e <span class="meta">==></span> <span class="monad">G'</span> <span class="value">v</span>
+<span class="meta">--------------------------------</span>
+<span class="monad">G</span> print e <span class="meta">==></span> <span class="monad">G' ++ v</span> []
+</div>
+
+<h3>Operators</h3>
+
+<div class="text">
+<span class="todo">TODO</span>
+</div>
+
+</div>
+</body>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<a href="index.html">home</a> ||
+<a href="overview.html">overview</a> ||
+<a href="example.html">code examples</a> ||
+<strong>documentation</strong> ||
+<a href="download.html">download</a> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Documentation</h1>
+
+<div class="text">
+<nav>
+<nav>
+<strong>welcome</strong> ||
+<a href="doc-core.html">core</a> ||
+<a href="doc-sugar.html">syntactic sugar</a>
+</nav>
+
+</nav>
+</div>
+
+<div class="text">
+Fry is a programming language that comes equipped with a formal semantics, like, among others, Standard ML (though Fry is a way much simpler language). Generally speaking, it consists of a small <a href="doc-core.html">core</a> expression language and some <a href="doc-sugar.html">syntactic sugar</a> that makes Fry more programmer-friendly. This documentation presents the full syntax of both, the formal semantics of core, and the translation rules from the syntactic sugar constructs into core.
+</div>
+
+<div class="text">
+The core language is based on Martín Abadi and Luca Cardelli's <a href="http://link.springer.com/chapter/10.1007%2F3-540-57880-3_1" target="_blank">calculus of primitive objects</a> under the call-by-name evaluation strategy. The calculus was extended with features that support object inheritance and side-effects.
+</div>
+
+<div class="text">
+The syntactic sugar includes constructs that make Fry more like other object-oriented languages (like chain fields updates, giving names to objects, and inheritance via the <span class="smallmath"><span class="keyword">extends</span></span> keyword). Some other powerful constructs can be defined and embedded in Fry, like first-class lambda-expressions.
+</div>
+
+</div>
+</body>

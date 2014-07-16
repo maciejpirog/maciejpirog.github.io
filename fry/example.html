@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<a href="index.html">home</a> ||
+<a href="overview.html">overview</a> ||
+<strong>code examples</strong> ||
+<a href="documentation.html">documentation</a> ||
+<a href="download.html">download</a> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Code examples</h1>
+
+<h2>AVL trees</h2>
+
+<div class="fry"><span class="keyword">let</span> max <span class="keyword">be</span> <span class="select">\</span>x y <span class="select">-&gt;</span> <span class="keyword">if</span> x > y <span class="keyword">then</span> x <span class="keyword">else</span> y <span class="keyword">in</span>
+
+<span class="comment">% Regular BSTs</span>
+
+<span class="keyword">object</span> <span class="emphasis3">Leaf</span>
+[
+  <span class="emphasis">insert</span> n <span class="select">=</span> Node.new n <span class="emphasis2">this</span> <span class="emphasis2">this</span>,
+  <span class="emphasis">show</span> <span class="select">=</span> []
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Node</span>
+[
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">left</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">right</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">new</span> n l r <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> n}{left <span class="select">=</span> l}{right <span class="select">=</span> r},
+  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="keyword">if</span> n < <span class="emphasis2">this</span>.val
+               <span class="keyword">then</span> <span class="emphasis2">this</span>{left <span class="select">=</span> <span class="emphasis2">this</span>.left.insert n}
+               <span class="keyword">else</span> <span class="emphasis2">this</span>{right <span class="select">=</span> <span class="emphasis2">this</span>.right.insert n},
+  <span class="emphasis">show</span> <span class="select">=</span> print "(";
+         <span class="emphasis2">this</span>.left.show;
+         print (<span class="emphasis2">this</span>.val);
+         <span class="emphasis2">this</span>.right.show;
+         print ")"
+]
+
+<span class="comment">% Trees with rotation</span>
+
+<span class="keyword">object</span> <span class="emphasis3">NodeRot</span> <span class="keyword">extends</span> Node
+[
+  <span class="emphasis">promoteR</span><span class="select">@</span>t <span class="select">=</span> t.right{left <span class="select">=</span> t.new t.val t.left t.right.left},
+  <span class="emphasis">promoteL</span><span class="select">@</span>t <span class="select">=</span> t.left{right <span class="select">=</span> t.new t.val t.left.right t.right}
+]
+
+<span class="comment">% Trees with explicit heights</span>
+
+<span class="keyword">object</span> <span class="emphasis3">LeafH</span> <span class="keyword">extends</span> Leaf
+[
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">calcH</span> <span class="select">=</span> <span class="emphasis2">this</span>,
+  <span class="emphasis">insert</span> n <span class="select">=</span> NodeH.new n <span class="emphasis2">this</span> <span class="emphasis2">this</span>
+]
+
+<span class="keyword">object</span> <span class="emphasis3">NodeH</span> <span class="keyword">extends</span> NodeRot
+[
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">calcH</span> <span class="select">=</span>
+    <span class="emphasis2">this</span>{height <span class="select">=</span> max <span class="emphasis2">this</span>.left.height <span class="emphasis2">this</span>.right.height + <span class="literal">1</span>},
+  <span class="emphasis">new</span> n l r <span class="select">=</span>
+    <span class="emphasis2">this</span>{super <span class="select">=</span> <span class="emphasis2">this</span>.super.new n l.calcH r.calcH}.calcH,
+  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="emphasis2">this</span>{super <span class="select">=</span> <span class="emphasis2">this</span>.super.insert n}.calcH
+]
+
+<span class="comment">% AVL trees</span>
+
+<span class="keyword">object</span> <span class="emphasis3">LeafAVL</span> <span class="keyword">extends</span> LeafH
+[
+  <span class="emphasis">skew</span> <span class="select">=</span> <span class="literal">1</span>,
+  <span class="emphasis">insert</span> n <span class="select">=</span> NodeAVL.new n <span class="emphasis2">this</span> <span class="emphasis2">this</span>,
+  <span class="emphasis">balance</span> <span class="select">=</span> <span class="emphasis2">this</span>
+]
+
+<span class="keyword">object</span> <span class="emphasis3">NodeAVL</span> <span class="keyword">extends</span> NodeH
+[
+  <span class="emphasis">new</span> n l r <span class="select">=</span> <span class="emphasis2">this</span>{super <span class="select">=</span> <span class="emphasis2">this</span>.super.new n l r},
+  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="emphasis2">this</span>{super <span class="select">=</span> <span class="emphasis2">this</span>.super.insert n}.balance,
+  <span class="emphasis">skew</span> <span class="select">=</span> <span class="emphasis2">this</span>.left.height - <span class="emphasis2">this</span>.right.height,
+  <span class="emphasis">balance</span> <span class="select">=</span> <span class="keyword">if</span> <span class="emphasis2">this</span>.skew &gt;= <span class="literal">2</span>
+              <span class="keyword">then</span> <span class="emphasis2">this</span>.balanceL
+              <span class="keyword">else</span> <span class="keyword">if</span> <span class="emphasis2">this</span>.skew &lt;= <span class="literal">0</span> - <span class="literal">2</span>
+                <span class="keyword">then</span> <span class="emphasis2">this</span>.balanceR
+                <span class="keyword">else</span> <span class="emphasis2">this</span>,
+  <span class="emphasis">balanceL</span> <span class="select">=</span> <span class="keyword">if</span> <span class="emphasis2">this</span>.left.skew &lt;= <span class="literal">0</span> - <span class="literal">1</span>
+                <span class="keyword">then</span> <span class="emphasis2">this</span>{left <span class="select">=</span> <span class="emphasis2">this</span>.left.promoteR}.promoteL
+                <span class="keyword">else</span> <span class="emphasis2">this</span>.promoteL,
+  <span class="emphasis">balanceR</span> <span class="select">=</span> <span class="keyword">if</span> <span class="emphasis2">this</span>.right.skew &gt;= <span class="literal">1</span>
+               <span class="keyword">then</span> <span class="emphasis2">this</span>{right <span class="select">=</span> <span class="emphasis2">this</span>.right.promoteL}.promoteR
+               <span class="keyword">else</span> <span class="emphasis2">this</span>.promoteR
+]
+
+<span class="comment">% Tests</span>
+
+<span class="keyword">object</span> <span class="emphasis3">InsertMany</span>
+[
+  <span class="emphasis">tree</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">arg</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{tree <span class="select">=</span> <span class="emphasis2">this</span>.tree.insert <span class="emphasis2">this</span>.arg},
+  <span class="emphasis">fromTo</span> x y <span class="select">=</span>  <span class="keyword">if</span> x < y
+                  <span class="keyword">then</span> <span class="emphasis2">this</span>.fromTo x (y - <span class="literal">1</span>) y
+                  <span class="keyword">else</span> <span class="emphasis2">this</span> x
+]
+
+<span class="keyword">let</span> m <span class="keyword">be</span> <span class="literal">15</span> <span class="keyword">in</span>
+
+print <span class="literal">"BST: "</span>;
+(InsertMany{tree <span class="select">=</span> Leaf}.fromTo <span class="literal">0</span> m).tree.show;
+
+print <span class="literal">"\n"</span>;
+
+print <span class="literal">"AVL: "</span>;
+(InsertMany{tree <span class="select">=</span> LeafAVL}.fromTo <span class="literal">0</span> m).tree.show;
+
+<span class="comment">% Output:
+% BST: (0(1(2(3(4(5(6(7(8(9(10(11(12(13(14(15))))))))))))))))
+% AVL: ((((0)1(2))3((4)5(6)))7(((8)9(10))11((12)13(14(15)))))</span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Tree sort</h2>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Leaf</span>
+[
+  <span class="emphasis">insert</span> <span class="select">=</span> Node.new,
+  <span class="emphasis">show</span> <span class="select">=</span> []
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Node</span>
+[
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">left</span> <span class="select">=</span> Leaf,
+  <span class="emphasis">right</span> <span class="select">=</span> Leaf,
+  <span class="emphasis">new</span> n <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> n},
+  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="keyword">if</span> n < <span class="emphasis2">this</span>.val
+               <span class="keyword">then</span> <span class="emphasis2">this</span>{left <span class="select">=</span> <span class="emphasis2">this</span>.left.insert n}
+               <span class="keyword">else</span> <span class="emphasis2">this</span>{right <span class="select">=</span> <span class="emphasis2">this</span>.right.insert n},
+  <span class="emphasis">show</span> <span class="select">=</span> <span class="emphasis2">this</span>.left.show;
+         print (<span class="emphasis2">this</span>.val);
+         <span class="emphasis2">this</span>.right.show
+]
+
+<span class="keyword">object</span> <span class="emphasis3">InsertMany</span>
+[
+  <span class="emphasis">tree</span> <span class="select">=</span> Leaf,
+  <span class="emphasis">arg</span> <span class="select">=</span> [],
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{tree <span class="select">=</span> <span class="emphasis2">this</span>.tree.insert <span class="emphasis2">this</span>.arg}
+]
+
+(InsertMany <span class="literal">3 14 15 9 26 5 1 58 9 7 93 23 8 4 62</span>).tree.show
+
+<span class="comment">% output: 1 3 4 5 7 8 9 9 14 15 23 26 58 62 93</span>
+</div>
+
+<h2>Infinite Fibonacci sequence</h2>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Fib</span>
+[
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">next</span> <span class="select">=</span> [],
+  <span class="emphasis">new</span> <span class="select">=</span> <span class="emphasis2">this</span>.unfold <span class="literal">1 1</span>,
+  <span class="emphasis">unfold</span> x y <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> x}{next <span class="select">=</span> Fib.unfold y (x + y)},
+  <span class="emphasis">showFirstN</span> n <span class="select">=</span> <span class="keyword">if</span> n <= <span class="literal">0</span>
+      <span class="keyword">then</span> []
+      <span class="keyword">else</span> print (<span class="emphasis2">this</span>.val); <span class="emphasis2">this</span>.next.show (n - <span class="literal">1</span>)
+]
+
+Fib.new.showFirstN <span class="literal">100</span>
+
+<span class="comment">% output: 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987...</span>
+</div>
+
+<h2>Generic Many</h2>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Many</span>
+[
+  <span class="emphasis">f</span> g a <span class="select">=</span> a,
+  <span class="emphasis">fold</span> g a <span class="select">=</span> <span class="emphasis2">this</span>.f g a,
+  <span class="emphasis">arg</span> <span class="select">=</span> [],
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{f g a <span class="select">=</span> g <span class="emphasis2">this</span>.arg (<span class="emphasis2">this</span>.f g a)},
+  <span class="emphasis">show</span> <span class="select">=</span> <span class="emphasis2">this</span>.fold (<span class="select">\</span>x _ <span class="select">-></span> print x) []
+]
+
+<span class="keyword">object</span> <span class="emphasis3">ManyExamples</span>
+[
+  <span class="emphasis">fromTo</span> x y <span class="select">=</span> <span class="keyword">if</span> x < y
+                 <span class="keyword">then</span> <span class="emphasis2">this</span>.fromTo x (y - <span class="literal">1</span>) y
+                 <span class="keyword">else</span> Many x,
+  <span class="emphasis">factorial</span> n <span class="select">=</span> (<span class="emphasis2">this</span>.fromTo <span class="literal">1</span> n).fold (<span class="select">\</span>x y <span class="select">-></span> x * y) <span class="literal">1</span>
+]
+
+(Many <span class="literal">1 2 3 4</span>).show;             <span class="comment">% this line prints out "1234"</span> 
+print (ManyExamples.factorial <span class="literal">6</span>) <span class="comment">% this line prints out "720"</span>
+</div>
+
+<h2>Monads</h2>
+
+<div class="fry"><span class="comment">% This example uses the generic Many data structure from
+% the previous example.</span>
+
+<span class="keyword">object</span> <span class="emphasis3">Monad</span>
+[
+  <span class="emphasis">return</span> x <span class="select">=</span> [],
+  <span class="emphasis">bind</span> f <span class="select">=</span> [],
+  <span class="emphasis">bindSequence</span> many <span class="select">=</span>
+    <span class="emphasis2">this</span>.bind (<span class="select">\</span>x <span class="select">-></span>
+    many.fold (<span class="select">\</span>act f <span class="select">-></span> act.bind (<span class="select">\</span>y <span class="select">-></span>
+    f.bind (<span class="select">\</span>m <span class="select">-></span>
+    <span class="emphasis2">this</span>.return (m y)))) (<span class="emphasis2">this</span>.return (Many x)))
+]
+
+<span class="comment">% Maybe monad</span>
+
+<span class="keyword">object</span> <span class="emphasis3">Maybe</span> <span class="keyword">extends</span> Monad
+[
+  <span class="emphasis">return</span> <span class="select">=</span> Just.new
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Nothing</span> <span class="keyword">extends</span> Maybe
+[
+  <span class="emphasis">bind</span> f <span class="select">=</span> <span class="emphasis2">this</span>,
+  <span class="emphasis">fromMaybe</span> d <span class="select">=</span> d
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Just</span> <span class="keyword">extends</span> Maybe
+[
+  <span class="emphasis">val</span> <span class="select">=</span> [],
+  <span class="emphasis">new</span> x <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> x},
+  <span class="emphasis">bind</span> f <span class="select">=</span> f <span class="emphasis2">this</span>.val,
+  <span class="emphasis">fromMaybe</span> d <span class="select">=</span> <span class="emphasis2">this</span>.val
+]
+
+<span class="keyword">let</span> ret <span class="keyword">be</span> Maybe.return <span class="keyword">in</span>
+
+<span class="comment">% this prints out "1234"</span>
+(((ret <span class="literal">1</span>).bindSequence (Many (ret <span class="literal">2</span>) (ret <span class="literal">3</span>) (ret <span class="literal">4</span>)))
+  .fromMaybe Many).show;
+
+<span class="comment">% this prints out nothing - the entire computation "fails"</span>
+(((ret <span class="literal">1</span>).bindSequence (Many (ret <span class="literal">2</span>) Nothing (ret <span class="literal">4</span>)))
+  .fromMaybe Many).show 
+</div>
+
+</div>
+</body>

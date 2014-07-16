@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<a href="index.html">home</a> ||
+<a href="overview.html">overview</a> ||
+<a href="example.html">code examples</a> ||
+<strong>documentation</strong> ||
+<a href="download.html">download</a> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Documentation</h1>
+
+<div class="text">
+<nav>
+<a href="documentation.html">welcome</a> ||
+<a href="doc-core.html">core</a> ||
+<strong>syntactic sugar</strong>
+</nav>
+</div>
+
+<div class="text">
+The following are the definitions of different Fry's syntactic sugar constructs. The syntax is specified and the translation rules <span class="smallmath"><span class="meta">~~~&gt;</span></span> into core are given. Whenever we introduce an identifier that do not appear in the pattern, we assume that it is fresh, that is, it does not appear in the trnasformed piece of code.
+<ul>
+<li><a href="#semicolon">Semicolon</a></li>
+<li><a href="#if">If-then-else expressions</a></li>
+<li><a href="#chain">Chain updates</a></li>
+<li><a href="#named">Named objects and inheritance</a></li>
+<li><a href="#lambda">Lambda-expressions</a></li>
+</ul>
+</div>
+
+<h2 id="semicolon">Semicolon</h2>
+
+<div class="math"><span class="nonterm">op</span> <span class="meta">::=</span> ... <span class="meta">|</span> ;
+</div>
+
+<div class="text">
+The ";" operator has the highest precedence, that is <span class="smallmath">a + b ; c</span> is equivalent to <span class="smallmath">a + (b ; c)</span>. The translation:
+</div>
+
+<div class="math">e ; f  <span class="meta">~~~&gt;</span>  <span class="keyword">let</span> x <span class="keyword">be</span> e <span class="keyword">in</span> f
+</div>
+
+<div class="text">
+Recall that our notation is that newly introduced variables do not appear in the code, so <span class="smallmath">x</span> is assumed not to be free in <span class="smallmath">e</span> or <span class="smallmath">f</span>.
+</div>
+
+<h2 id="if">If-then-else expressions</h2>
+
+<div class="text">
+The syntax and semantics of the if-then-else expressions are as in most of the expression-based languages. Do not confuse them with how if-then-else works in C. It's more like the C's "?:" construct.
+</div>
+
+<div class="math"><span class="nonterm">expr</span> <span class="meta">::=</span> ...
+          <span class="meta">|</span>  <span class="keyword">if</span> <span class="nonterm">expr</span> <span class="keyword">then</span> <span class="nonterm">expr</span> <span class="keyword">else</span> <span class="nonterm">expr</span>
+</div>
+
+<div class="text">
+The precedence of the above is exactly the same as in the case of the "let" construct.
+</div>
+
+<div class="text">
+We assume that there is a boolean base type that consists of <span class="smallmath"><span class="literal">true</span></span> and <span class="smallmath"><span class="literal">false</span></span>. We define the "?" opeartor as follows:
+</div>
+
+<div class="math"><span class="literal">true</span>  ? o = o.tt
+<span class="literal">false</span> ? o = o.ff
+</div>
+
+<div class="text">
+Now, the translation is as follows:
+</div>
+
+<div class="math"><span class="keyword">if</span> b <span class="keyword">then</span> t <span class="keyword">else</span> e
+<span class="meta">~~~&gt;</span>
+b ? [tt=t, ff=f]
+</div>
+
+<div class="text">
+Note that since we have the full power of lambda-expressions, we do not need the base type to implement booleans, we could use Church encoding for both the boolean values, operators, and the if-then-else expressions.
+</div>
+
+<h2 id="chain">Chain updates</h2>
+
+<div class="math"><span class="nonterm">expr</span> <span class="meta">::=</span> ...
+          <span class="meta">|</span>  <span class="nonterm">expr</span> { <span class="nonterm">update</span> }
+<span class="nonterm">update</span> <span class="meta">::=</span> label . ... . label <span class="meta">[</span><span class="select">@ </span>ident<span class="meta">]</span> <span class="select">=</span> <span class="nonterm">expr</span>
+</div>
+
+<div class="text">
+There is at least one identifier in the definition of "update".
+</div>
+
+<div class="math">e{x.y. ... .z <span class="select">@</span>t <span class="select">=</span> f}
+<span class="meta">~~~&gt;</span>
+e{x<span class="select">@</span>t <span class="select">=</span> <span class="keyword">let</span> tx <span class="keyword">be</span> t.x 
+        <span class="keyword">in</span>  tx{y <span class="select">=</span> <span class="keyword">let</span> txy <span class="keyword">be</span> tx.y
+                   <span class="keyword">in</span>  txy{ ... {z <span class="select">=</span> f} ... }}
+</div>
+
+<h2 id="named">Named objects and inheritance</h2>
+
+<div class="math"><span class="nonterm">expr</span> <span class="meta">::=</span> ... <span class="meta">|</span> <span class="nonterm">decls</span> <span class="nonterm">expr</span>
+<span class="nonterm">decls</span> <span class="meta">::=</span> <span class="nonterm">decl</span> ... <span class="nonterm">decl</span>
+<span class="nonterm">decl</span> <span class="meta">::=</span> <span class="keyword">object</span> ident <span class="meta">[</span><span class="keyword">extends</span> ident<span class="meta">]</span> <span class="nonterm">obj</span>
+<span class="nonterm">obj</span> <span class="meta">::=</span> [ <span class="nonterm">field</span> , ... , <span class="nonterm">field</span> ]
+</div>
+
+<div class="math"><span class="keyword">object</span> A<sub>1</sub> <span class="keyword">extends</span> B<sub>1</sub> [ T<sub>1</sub> ]
+...
+<span class="keyword">object</span> A<sub>n</sub> <span class="keyword">extends</span> B<sub>n</sub> [ T<sub>n</sub> ]
+e
+<span class="meta">~~~&gt;</span>
+<span class="keyword">let</span> A<sub>1</sub> <span class="keyword">be</span> [ super<span class="select">@</span>t <span class="select">=</span> B<sub>1</sub> | T<sub>1</sub> ]
+...
+<span class="keyword">and</span> A<sub>n</sub> <span class="keyword">be</span> [ super<span class="select">@</span>t <span class="select">=</span> B<sub>1</sub> | T<sub>n</sub> ]
+<span class="keyword">in</span> e
+</div>
+
+<div class="text">
+If a declaration does not include the "extends" part, the definition of the "super" field in the "let" expression is simply omitted.
+</div>
+
+<h2 id="lambda">Lambda-expressions</h2>
+
+<div class="math"><span class="nonterm">expr</span> <span class="meta">::=</span> ...
+          <span class="meta">|</span>  <span class="select">\</span> ident <span class="select">-></span> <span class="nonterm">expr</span>              <span class="comment">% abstraction</span>
+          <span class="meta">|</span>  <span class="nonterm">expr</span> <span class="nonterm">expr</span>                <span class="comment">% application</span>
+</div>
+
+<div class="text">
+Applications bind stronger than operators but weaker than operators. For example, <span class="smallmath">a + b c.l</span> is equivalent to <span class="smallmath">a + (b (c.l))</span>. Abstractions bind like "let" expressions.
+</div>
+
+<div class="math"><span class="select">\</span>x <span class="select">-></span> e  <span class="meta">~~~&gt;</span>  [ arg <span class="select">=</span> [], val<span class="select">@</span>x <span class="select">=</span> e<span class="env">x.arg/x</span> ]
+p q      <span class="meta">~~~&gt;</span>  p{arg <span class="select">=</span> q}.val
+</div>
+
+<div class="text">
+Note that "arg" and "val" are not fresh. They are distinguished identifiers, just like "super".
+</div>
+
+<div class="text">
+We also define sugar for the sugar:
+</div>
+
+<div class="math"><span class="nonterm">expr</span> <span class="meta">::=</span> ...
+          <span class="meta">|</span>  <span class="select">\</span> ident ... ident <span class="select">-></span> <span class="nonterm">expr</span>
+</div>
+
+<div class="math"><span class="select">\</span></span>d<sub>1</sub> </span>d<sub>2</sub> ... </span>d<sub>n</sub> <span class="select">-></span> e  <span class="meta">~~~&gt;</span>  <span class="select">\</span>d<sub>1</sub> <span class="select">-></span> <span class="select">\</span>d<sub>2</sub> <span class="select">-></span> ... <span class="select">\</span>d<sub>n</sub> <span class="select">-></span> e
+</div>
+
+<div class="text">
+We also define a special syntax to supply arguments to fields:
+</div>
+
+<div class="math"><span class="nonterm">update</span> <span class="meta">::=</span> label . ... . label ident ... ident <span class="meta">
+                                      [</span><span class="select">@ </span>ident<span class="meta">]</span> <span class="select">=</span> <span class="nonterm">expr</span>
+</div>
+
+<div class="math">a . b . ... . c x y ... z <span class="select">@</span>t <span class="select">=</span> e
+<span class="meta">~~~&gt;</span>
+a . b . ... . c <span class="select">@</span>t <span class="select">=</span> <span class="select">\</span>x y ... z <span class="select">-></span> e
+</div>
+
+</div>
+</body>

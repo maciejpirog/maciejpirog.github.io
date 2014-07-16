@@ -1,0 +1,225 @@
+body
+{
+  font-family: 'PT Sans Caption', sans-serif;
+  font-size:17px;
+  line-height:1.5;
+  color:#333333;
+  margin-bottom:5em;
+}
+
+.main
+{
+  max-width:40em;
+  margin:2em auto 0 auto;
+}
+
+h1
+{
+  font-size:2em;
+  text-align:center;
+}
+
+h2
+{
+  font-size:1.4em;
+  margin-top:1em;
+}
+
+h3
+{
+color:black;
+font-size:1em;
+font-weight:bold;
+}
+
+.intitle
+{
+  font-weight:normal;
+  color:#333333;
+}
+
+strong
+{
+  color:black;
+}
+
+a
+{
+  color:#4560f3;
+  text-decoration:none;
+}
+
+a:hover
+{
+  color:#85a0ff;
+}
+
+.pageheader
+{
+  text-align:center;
+  margin: 3em 0 1em 0;
+}
+
+.text
+{
+  margin-bottom:1em;
+}
+
+nav
+{
+  text-align:center;
+}
+
+
+.fryold
+{
+  font-family: 'PT Mono', monospace;
+  white-space:pre;
+  background-color:#f0f0f0;
+  padding:1em;
+  border-radius:7px;
+  border:1px dashed #bbbbbb;
+  margin-bottom:1em;
+}
+
+.fry
+{
+  background-color:#fdfdfd;
+  font-family: 'PT Mono', monospace;
+  white-space:pre;
+  padding:1em;
+  padding-right:2em;
+  border-radius:3px;
+  border:1px solid #d0d0d0;
+  box-shadow: 1px 1px 4px #dddddd;
+  margin-bottom:1em;
+  display:inline-block;
+  display:block;
+}
+
+.fryin
+{
+  font-family: 'PT Mono', monospace;
+}
+
+.keyword
+{
+  color:#006600;
+  font-weight:bold;
+}
+
+.emphasis
+{
+  color:#3300cc;
+}
+
+.emphasis2
+{
+  color:#005577;
+}
+
+.emphasis3
+{
+  color:#ff4500;
+}
+
+.select
+{
+  color:#bb0033;
+}
+
+.comment
+{
+  color:#666666;
+  font-style:italic;
+}
+
+.literal
+{
+  color:#ff4466;
+  color:#e62470;
+}
+
+.math
+{
+  font-family: 'PT Mono', monospace;
+  white-space:pre;
+  background-color:#f0f0f0;
+  padding:1em;
+  margin-bottom:1em;
+  line-height:2.5;
+  border-radius:3px;
+  border:1px solid #d0d0d0;
+  border-left:15px solid #d0d0d0;
+  box-shadow: 1px 1px 4px #dddddd;
+}
+.smallmath
+{
+  font-family: 'PT Mono', monospace;
+  white-space:pre;
+}
+
+.nonterm
+{
+  xpadding:0 1em;
+  background-color:#ffffee;
+  border:1px solid #ccccbb;
+  border-radius:4px;
+}
+.nonterm::before
+{ 
+content:"  ";
+}
+.nonterm::after
+{ 
+content:"  ";
+}
+
+.meta
+{
+  font-weight:bold;
+  color:#6666ee;
+}
+
+.env
+{
+  background-color:#dddddd;
+  border-left:3px solid #666666;
+  border-right:3px solid #666666;
+  border-radius:6px;
+  margin:0 0 0 2px;
+}
+.env::before
+{ 
+content:" ";
+}
+.env::after
+{ 
+content:" ";
+}
+
+.value
+{
+  font-weight:bold;
+}
+
+.monad
+{
+  background-color:#444444;
+  color:#ffcccc;
+  font-weight:bold;
+  border: 2px dotted #f0f0f0;
+}
+.monad::before
+{ 
+content:" ";
+}
+.monad::after
+{ 
+content:" ";
+}
+
+.todo
+{
+  background-color:red;
+}
