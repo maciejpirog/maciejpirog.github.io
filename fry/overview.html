@@ -82,7 +82,12 @@ Fry is an object-oriented language, but it is also declarative, which in this ca
 </div>
 
 <div class="text">
-Note that there is no distinction between fields and methods. Every field can access the whole object (by default, with the distinguished identifier this), as in the bmi field in the example above. <strong>Accessing</strong> a field is simply extraction of the element of the object, as in the following example:
+Fry is an <strong>expression-based</strong> language, which means that every program is one (sometimes rather huge) expression. The code above is a valid Fry program, whose value is the defined object itself, since objects are final values.
+</div>
+
+
+<div class="text">
+Note that there is no distinction between fields and methods. Every field can access the whole object (by default, with the distinguished identifier "this"), as in the bmi field in the example above. <strong>Accessing</strong> a field is simply extraction of the element of the object, as in the following example:
 </div>
 
 <div class="fry">[ <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
@@ -183,14 +188,14 @@ The above also evaluates to 2.
 <h2 id="updates">Updates</h2>
 
 <div class="text">
-We cannot modify an existing object. That is why there is no notion of a variable in Fry, as objects, once created, do not vary in time. However, we can create new objects by altering existing ones. The syntax to achieve this is as follows:
+We cannot modify an existing object. That is why there is no notion of a variable in Fry, since objects, once created, do not vary in time. However, we can define new objects based on existing ones. The syntax to achieve this is as follows:
 </div>
 
 <div class="fry">obj{f<span class="select"> = </span>expr}
 </div>
 
 <div class="text">
-The code above evaluates to an object "obj" with the field "f" overwritten with the value of the expression "expr". For example:
+The code above evaluates to an object "obj" with the field "f" substituted with the value of the expression "expr". For example:
 </div>
 
 <div class="fry">[<span class="emphasis">x</span><span class="select">=</span><span class="literal">1</span>, <span class="emphasis">y</span><span class="select">=</span><span class="literal">2</span>]{x<span class="select">=</span><span class="literal">7</span>}
