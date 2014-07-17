@@ -53,6 +53,7 @@ The theoretical foundation of Fry is Martín Abadi and Luca Cardelli's <a href="
 Note that Fry is in its infancy. A lot of changes to the language and surroundings are bound to happen, some of them revolutionary, all of them unpredictable.
 </div>
 
+<!--
 <h2>A snippet</h2>
 
 <div class="fry"><span class="keyword">object</span> <span class="emphasis3">Nil</span> [ <span class="emphasis">map</span> f <span class="select">=</span> <span class="emphasis2">this</span> ]
@@ -80,6 +81,45 @@ Note that Fry is in its infancy. A lot of changes to the language and surroundin
 (Many <span class="literal">1 2 3 4 5 6 7 8</span>).toList.map square
 
 <span class="comment">% this program evaluates to the list 1 4 9 16 25 36 49 64</span>
+</div>
+-->
+
+<h2>A snippet</h2>
+
+<div class="fry"><span class="comment">% Tree sort with BSTs</span>
+
+<span class="keyword">object</span> <span class="emphasis3">Leaf</span>
+[
+  <span class="emphasis">insert</span> <span class="select">=</span> Node.new,
+  <span class="emphasis">show</span> <span class="select">=</span> []
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Node</span>
+[
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">left</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">right</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">new</span> n <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> n}{left <span class="select">=</span> Leaf}{right <span class="select">=</span> Leaf},
+  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="keyword">if</span> n < <span class="emphasis2">this</span>.val
+               <span class="keyword">then</span> <span class="emphasis2">this</span>{left <span class="select">=</span> <span class="emphasis2">this</span>.left.insert n}
+               <span class="keyword">else</span> <span class="emphasis2">this</span>{right <span class="select">=</span> <span class="emphasis2">this</span>.right.insert n},
+  <span class="emphasis">show</span> <span class="select">=</span> <span class="emphasis2">this</span>.left.show;
+         print (<span class="emphasis2">this</span>.val);
+         <span class="emphasis2">this</span>.right.show
+]
+
+<span class="keyword">object</span> <span class="emphasis3">InsertMany</span>
+[
+  <span class="emphasis">tree</span> <span class="select">=</span> Leaf,
+  <span class="comment">% "arg" and "val" are special fields that enable
+  % the application syntax a la functional programming</span>
+  <span class="emphasis">arg</span> <span class="select">=</span> [],
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{tree <span class="select">=</span> <span class="emphasis2">this</span>.tree.insert <span class="emphasis2">this</span>.arg}
+]
+
+(InsertMany <span class="literal">3 14 15 9 26 5 1 58 9 7 93 23 8 4 62</span>).tree.show
+
+<span class="comment">% output: 1 3 4 5 7 8 9 9 14 15 23 26 58 62 93</span>
 </div>
 
 

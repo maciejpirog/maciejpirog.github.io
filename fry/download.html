@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8"> 
+<meta name="description" content="">
+<meta name="keywords" content="fry, programming language, declarative, object-oriented">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+<link rel="icon" type="image/png" href="icon.png">
+<title>Fry</title>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="screen.css">
+
+</head>
+<body>
+<div class="pageheader"><img src="logo-green-450.png"></div>
+
+<div class="text">
+<nav>
+<a href="index.html">home</a> ||
+<a href="overview.html">overview</a> ||
+<a href="example.html">code examples</a> ||
+<a href="documentation.html">documentation</a> ||
+<strong>download</strong> ||
+<a href="faq.html">faq</a>
+</nav>
+</div>
+
+<div class="main">
+
+<h1>Download Fry</h1>
+
+<div class="text">
+In <a href="http://github.com/maciejpirog/fry" target="_blank">Fry's github repository</a>, you will find a batch interpreter and a bit buggy emacs syntax highliting mode.
+</div>
+
+<div class="text">
+The interpreter is written in Haskell, so you'll need a Haskell compiler. Any Haskell compiler would do, for example <a href="http://www.haskell.org/platform/" target="_blank">GHC</a>. Once you have GHC, download the sources, go to the "interpreter" directory, and type
+</div>
+
+<div class="fry">ghc --make -O2 Main -o fry
+</div>
+
+<div class="text">
+This will compile the interpreter and create an executable called "fry". Now, you can interpret a Fry file, like this:
+</div>
+
+<div class="fry">./fry my-program.fry
+</div>
+
+<div class="text">
+Try also the -v option for more verbose statistics:
+</div>
+
+<div class="fry">./fry -v my-program.fry
+</div>
+
+
+</div>
+</body>

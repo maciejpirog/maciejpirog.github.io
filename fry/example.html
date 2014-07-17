@@ -35,7 +35,15 @@
 
 <h1>Code examples</h1>
 
-<h2>AVL trees</h2>
+<div class="text">
+<ul>
+<li><a href="#avl">AVL trees</a></li>
+<li><a href="#many">Generic Many</a></li>
+<li><a href="#monads">Monads</a></li>
+</ul>
+</div>
+
+<h2 id="avl">AVL trees</h2>
 
 <div class="fry"><span class="keyword">let</span> max <span class="keyword">be</span> <span class="select">\</span>x y <span class="select">-&gt;</span> <span class="keyword">if</span> x > y <span class="keyword">then</span> x <span class="keyword">else</span> y <span class="keyword">in</span>
 
@@ -71,7 +79,7 @@
   <span class="emphasis">promoteL</span><span class="select">@</span>t <span class="select">=</span> t.left{right <span class="select">=</span> t.new t.val t.left.right t.right}
 ]
 
-<span class="comment">% Trees with explicit heights</span>
+<span class="comment">% Trees with explicit height</span>
 
 <span class="keyword">object</span> <span class="emphasis3">LeafH</span> <span class="keyword">extends</span> Leaf
 [
@@ -145,81 +153,13 @@ print <span class="literal">"AVL: "</span>;
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h2>Tree sort</h2>
-
-<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Leaf</span>
-[
-  <span class="emphasis">insert</span> <span class="select">=</span> Node.new,
-  <span class="emphasis">show</span> <span class="select">=</span> []
-]
-
-<span class="keyword">object</span> <span class="emphasis3">Node</span>
-[
-  <span class="emphasis">val</span> <span class="select">=</span> <span class="literal">0</span>,
-  <span class="emphasis">left</span> <span class="select">=</span> Leaf,
-  <span class="emphasis">right</span> <span class="select">=</span> Leaf,
-  <span class="emphasis">new</span> n <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> n},
-  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="keyword">if</span> n < <span class="emphasis2">this</span>.val
-               <span class="keyword">then</span> <span class="emphasis2">this</span>{left <span class="select">=</span> <span class="emphasis2">this</span>.left.insert n}
-               <span class="keyword">else</span> <span class="emphasis2">this</span>{right <span class="select">=</span> <span class="emphasis2">this</span>.right.insert n},
-  <span class="emphasis">show</span> <span class="select">=</span> <span class="emphasis2">this</span>.left.show;
-         print (<span class="emphasis2">this</span>.val);
-         <span class="emphasis2">this</span>.right.show
-]
-
-<span class="keyword">object</span> <span class="emphasis3">InsertMany</span>
-[
-  <span class="emphasis">tree</span> <span class="select">=</span> Leaf,
-  <span class="emphasis">arg</span> <span class="select">=</span> [],
-  <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{tree <span class="select">=</span> <span class="emphasis2">this</span>.tree.insert <span class="emphasis2">this</span>.arg}
-]
-
-(InsertMany <span class="literal">3 14 15 9 26 5 1 58 9 7 93 23 8 4 62</span>).tree.show
-
-<span class="comment">% output: 1 3 4 5 7 8 9 9 14 15 23 26 58 62 93</span>
-</div>
-
-<h2>Infinite Fibonacci sequence</h2>
-
-<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Fib</span>
-[
-  <span class="emphasis">val</span> <span class="select">=</span> <span class="literal">0</span>,
-  <span class="emphasis">next</span> <span class="select">=</span> [],
-  <span class="emphasis">new</span> <span class="select">=</span> <span class="emphasis2">this</span>.unfold <span class="literal">1 1</span>,
-  <span class="emphasis">unfold</span> x y <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> x}{next <span class="select">=</span> Fib.unfold y (x + y)},
-  <span class="emphasis">showFirstN</span> n <span class="select">=</span> <span class="keyword">if</span> n <= <span class="literal">0</span>
-      <span class="keyword">then</span> []
-      <span class="keyword">else</span> print (<span class="emphasis2">this</span>.val); <span class="emphasis2">this</span>.next.show (n - <span class="literal">1</span>)
-]
-
-Fib.new.showFirstN <span class="literal">100</span>
-
-<span class="comment">% output: 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987...</span>
-</div>
-
-<h2>Generic Many</h2>
+<h2 id="many">Generic Many</h2>
 
 <div class="fry"><span class="keyword">object</span> <span class="emphasis3">Many</span>
 [
   <span class="emphasis">f</span> g a <span class="select">=</span> a,
   <span class="emphasis">fold</span> g a <span class="select">=</span> <span class="emphasis2">this</span>.f g a,
-  <span class="emphasis">arg</span> <span class="select">=</span> [],
+  <span class="emphasis">arg</span> <span class="select">=</span> <span class="select">?</span>,
   <span class="emphasis">val</span> <span class="select">=</span> <span class="emphasis2">this</span>{f g a <span class="select">=</span> g <span class="emphasis2">this</span>.arg (<span class="emphasis2">this</span>.f g a)},
   <span class="emphasis">show</span> <span class="select">=</span> <span class="emphasis2">this</span>.fold (<span class="select">\</span>x _ <span class="select">-></span> print x) []
 ]
@@ -236,7 +176,7 @@ Fib.new.showFirstN <span class="literal">100</span>
 print (ManyExamples.factorial <span class="literal">6</span>) <span class="comment">% this line prints out "720"</span>
 </div>
 
-<h2>Monads</h2>
+<h2 id="monads">Monads</h2>
 
 <div class="fry"><span class="comment">% This example uses the generic Many data structure from
 % the previous example.</span>
