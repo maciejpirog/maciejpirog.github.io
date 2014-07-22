@@ -37,10 +37,110 @@
 
 <div class="text">
 <ul>
+<li><a href="#helloworld">Hello world</a></li>
+<li><a href="#expressions">Expressions</a></li>
+<li><a href="#while">While loop</a></li>
+<li><a href="#cons">Cons lists</a></li>
+<li><a href="#insertion">Insertion sort</a></li>
 <li><a href="#avl">AVL trees</a></li>
 <li><a href="#many">Generic Many</a></li>
 <li><a href="#monads">Monads</a></li>
 </ul>
+</div>
+
+<h2 id="helloworld">Hello world</h2>
+
+<div class="fry">print <span class="literal">"hello world"</span>
+</div>
+
+<div class="text">
+The above is an expression that performs a side-effect, which prints out the string "hello world". The value of the expression is [], that is an empty object.
+</div>
+
+<h2 id="expressions">Expressions</h2>
+
+<div class="fry"><span class="literal">1</span> + (<span class="keyword">if</span> <span class="literal">2</span> + <span class="literal">2</span> > <span class="literal">3</span> <span class="keyword">then</span> <span class="literal">3</span> + <span class="literal">10</span> <span class="keyword">else</span> <span class="literal">7</span>) + <span class="literal">2</span>
+</div>
+
+<div class="text">
+The above is an expression that evaluates to 16. It performs no side-effects.
+</div>
+
+<h2 id="while">While loop</h2>
+
+<div class="text">
+That is a trick question! There are no mutable variables in Fry, so there are no While or For loops! Use recursion instead.
+</div>
+
+<h2 id="cons">Cons lists</h2>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Nil</span>
+[
+  <span class="emphasis">show</span> <span class="select">=</span> []
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Cons</span>
+[
+  <span class="emphasis">head</span> <span class="select">=</span> <span class="literal">?</span>,
+  <span class="emphasis">tail</span> <span class="select">=</span> <span class="literal">?</span>,
+  <span class="emphasis">new</span> h t <span class="select">=</span> <span class="emphasis2">this</span>{head <span class="select">=</span> h}{tail <span class="select">=</span> t},
+  <span class="emphasis">show</span> <span class="select">=</span> print (<span class="emphasis2">this</span>.head);
+         <span class="emphasis2">this</span>.tail.show
+]
+
+(Cons.new <span class="literal">"g"</span> (Cons.new <span class="literal">"o"</span> (Cons.new <span class="literal">"d"</span> Nil))).show
+</div>
+
+<div class="text">
+The above code defines two objects: "Nil" has one field, while "Cons" has four fields. The "Cons" object works as a template of elements of lists: every element of a list is a copy of "Cons" with the "head" and "tail" fields set to appropriate values.
+</div>
+
+<div class="text">
+The expression evaluates to the empty object [], but it performs a side-effect: it prints out "god".
+</div>
+
+<div class="text">
+We can use inheritance to add reversing of lists:
+</div>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">NilR</span> <span class="keyword">extends</span> Nil
+[
+  <span class="emphasis">rev</span> <span class="select">=</span> <span class="emphasis2">this</span>,
+  <span class="emphasis">rev'</span> acc <span class="select">=</span> acc
+]
+
+<span class="keyword">object</span> <span class="emphasis3">ConsR</span> <span class="keyword">extends</span> Cons
+[
+  <span class="emphasis">rev</span> <span class="select">=</span> <span class="emphasis2">this</span>.rev' NilR,
+  <span class="emphasis">rev'</span> acc <span class="select">=</span> <span class="emphasis2">this</span>.tail.rev' <span class="emphasis2">this</span>{tail <span class="select">=</span> acc}
+]
+
+(ConsR.new <span class="literal">"g"</span> (ConsR.new <span class="literal">"o"</span> (ConsR.new <span class="literal">"d"</span> NilR))).rev.show
+</div>
+
+<div class="text">
+The code above prints out "dog".
+</div>
+
+<h2 id="insert">Insertion sort</h2>
+
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Nil</span>
+[
+  <span class="emphasis">insert</span> n <span class="select">=</span> Cons.new n <span class="emphasis2">this</span>,
+  <span class="emphasis">sort</span> <span class="select">=</span> <span class="emphasis2">this</span>
+]
+
+<span class="keyword">object</span> <span class="emphasis3">Cons</span>
+[
+  <span class="emphasis">head</span> <span class="select">=</span> <span class="literal">?</span>,
+  <span class="emphasis">tail</span> <span class="select">=</span> <span class="literal">?</span>,
+  <span class="emphasis">new</span> h t <span class="select">=</span> <span class="emphasis2">this</span>{head <span class="select">=</span> h}{tail <span class="select">=</span> t},
+  <span class="emphasis">insert</span> n <span class="select">=</span> <span class="keyword">if</span> n > <span class="emphasis2">this</span>.head
+               <span class="keyword">then</span> <span class="emphasis2">this</span>{tail <span class="select">=</span> <span class="emphasis2">this</span>.tail.insert n}
+               <span class="keyword">else</span> <span class="emphasis2">this</span>{head <span class="select">=</span> n}
+                        {tail <span class="select">=</span> <span class="emphasis2">this</span>.tail.insert <span class="emphasis2">this</span>.head},
+  <span class="emphasis">sort</span> <span class="select">=</span> <span class="emphasis2">this</span>.tail.sort.insert <span class="emphasis2">this</span>.head
+]
 </div>
 
 <h2 id="avl">AVL trees</h2>
