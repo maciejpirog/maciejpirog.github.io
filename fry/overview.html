@@ -87,9 +87,9 @@ Fry is:
 Fry is an object-oriented language, but it is also declarative, which in this case means that objects are non-mutable values. An <strong>object</strong> is defined as a collection of labelled <strong>fields</strong>, like this:
 </div>
 
-<div class="fry">[ <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
-  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
-  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height) ]
+<div class="fry">[ <span class="emphasis">width</span> <span class="select">=</span> <span class="literal">3</span>,
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">5</span>,
+  <span class="emphasis">area</span> <span class="select">=</span> <span class="emphasis2">this</span>.width * <span class="emphasis2">this</span>.height ]
 </div>
 
 <div class="text">
@@ -101,13 +101,13 @@ Fry is an <strong>expression-based</strong> language, which means that every pro
 Note that there is no distinction between fields and methods. Every field can access the whole object (by default, with the distinguished identifier "this"), as in the bmi field in the example above. <strong>Accessing</strong> a field is simply extraction of the element of the object, as in the following example:
 </div>
 
-<div class="fry">[ <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
-  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
-  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height) ].bmi
+<div class="fry">[ <span class="emphasis">width</span> <span class="select">=</span> <span class="literal">3</span>,
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">5</span>,
+  <span class="emphasis">area</span> <span class="select">=</span> <span class="emphasis2">this</span>.width * <span class="emphasis2">this</span>.height ].area
 </div>
 
 <div class="text">
-The expression above is equal to 27.755 (overweight).
+The expression above is equal to 15.
 </div>
 
 <div class="text">
@@ -118,14 +118,14 @@ The object is bound to the this identifier as late as possible. This means that 
 We can create a named object with the <span class="keyword">object</span> keyword:
 </div>
 
-<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Person</span>
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Rectangle</span>
 [
-  <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
-  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
-  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height)
+  <span class="emphasis">width</span> <span class="select">=</span> <span class="literal">3</span>,
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">5</span>,
+  <span class="emphasis">area</span> <span class="select">=</span> <span class="emphasis2">this</span>.width * <span class="emphasis2">this</span>.height
 ]
 
-Person.bmi
+Rectangle.area
 </div>
 
 <div class="text">
@@ -140,19 +140,19 @@ All fields of an object have to be given a value, and these values are not mutab
 Objects can be nested in the obvious way:
 </div>
 
-<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Person</span>
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">Rectangle</span>
 [
-  <span class="emphasis">weight</span> <span class="select">=</span> <span class="literal">85</span>,   <span class="comment">% in kg</span>
-  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">1.75</span>, <span class="comment">% in m</span>
-  <span class="emphasis">bmi</span> <span class="select">=</span> <span class="emphasis2">this</span>.weight / (<span class="emphasis2">this</span>.height * <span class="emphasis2">this</span>.height),
-  <span class="emphasis">sounds</span> <span class="select">=</span> [<span class="emphasis">happy</span><span class="select">=</span><span class="literal">"yay"</span>, <span class="emphasis">sad</span><span class="select">=</span><span class="literal">"boo"</span>]
+  <span class="emphasis">width</span> <span class="select">=</span> <span class="literal">3</span>,
+  <span class="emphasis">height</span> <span class="select">=</span> <span class="literal">5</span>,
+  <span class="emphasis">area</span> <span class="select">=</span> <span class="emphasis2">this</span>.width * <span class="emphasis2">this</span>.height,
+  <span class="emphasis">color</span> <span class="select">=</span> [<span class="emphasis">red</span><span class="select">=</span><span class="literal">100</span>, <span class="emphasis">green</span><span class="select">=</span><span class="literal">10</span>, <span class="emphasis">blue</span><span class="select">=</span><span class="literal">255</span>]
 ]
 
-Person.sounds.happy
+Rectangle.color.red
 </div>
 
 <div class="text">
-The expression above evaluates to "yay".
+The expression above evaluates to 100.
 </div>
 
 <h2 id="fields">Fields</h2>
@@ -216,7 +216,23 @@ The code above evaluates to an object "obj" with the field "f" substituted with 
 The expression above evaluates to the object "[x=7, y=2]".
 </div>
 
+<div class="text">
+Note that on a filed access, the object is bound to the "this" identifier as late as possible. For example, consider the following:
+</div>
 
+<div class="fry"><span class="keyword">object</span> <span class="emphasis3">A</span>
+[
+  <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">y</span> <span class="select">=</span> <span class="literal">0</span>,
+  <span class="emphasis">sum</span> <span class="select">=</span> <span class="emphasis2">this</span>.x + <span class="emphasis2">this</span>.y
+]
+
+A{x <span class="select">=</span> 2}{y <span class="select">=</span> 3}.sum
+</div>
+
+<div class="text">
+The expression above evaluates to 5.
+</div>
 <h3>Nested updates</h3>
 
 <div class="text">
