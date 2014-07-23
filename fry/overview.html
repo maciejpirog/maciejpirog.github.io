@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="utf-8"> 
-<meta name="description" content="">
+<meta name="description" content="A crash course of the Fry programming language">
 <meta name="keywords" content="fry, programming language, declarative, object-oriented">
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
@@ -56,16 +56,27 @@ This document is a crash course in Fry programming. Each section describes how F
 Fry is:
 
 <ul>
+
 <li>
 <strong>Object-oriented</strong>: The basic building blocks of Fry programs are objects with fields and inheritance. 
+</li>
+
 <li>
-<strong>Declarative</strong>: Objects are stateless, which means that you cannot modify them on the fly. Once created, an object stays the same for eternity.
+<strong>Declarative</strong>: Fry is expression-based, which means that objects are non-mutable: once created, an object stays the same for eternity.
+</li>
+
 <li>
 <strong>Classless</strong>: There is no notion of a class. Dynamic dispatch is interface-based.
+</li>
+
 <li>
 <strong>Functional</strong>: You can utilise first-class lambda-expressions (but not algebraic datatypes, though).
+</li>
+
 <li>
 <strong>Dynamically typed</strong>: You can write idiotic expressions like "1 + true" and nobody will complain until it's too late.
+</li>
+
 </ul>
 
 </div>

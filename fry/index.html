@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="utf-8"> 
-<meta name="description" content="">
+<meta name="description" content="Fry is an experimental programming language that combines the best features of object-oriented and declarative paradigms.">
 <meta name="keywords" content="fry, programming language, declarative, object-oriented">
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
@@ -96,15 +96,16 @@ Note that Fry is in its infancy. A lot of changes to the language and surroundin
 
 <span class="keyword">object</span> <span class="emphasis3">Node</span>
 [
-  <span class="emphasis">val</span> <span class="select">=</span> <span class="select">?</span>,
-  <span class="emphasis">left</span> <span class="select">=</span> <span class="select">?</span>,
-  <span class="emphasis">right</span> <span class="select">=</span> <span class="select">?</span>,
+  <span class="emphasis">val</span> <span class="select">=</span> <span class="literal">?</span>,
+  <span class="emphasis">left</span> <span class="select">=</span> <span class="literal">?</span>,
+  <span class="emphasis">right</span> <span class="select">=</span> <span class="literal">?</span>,
   <span class="emphasis">new</span> n <span class="select">=</span> <span class="emphasis2">this</span>{val <span class="select">=</span> n}{left <span class="select">=</span> Leaf}{right <span class="select">=</span> Leaf},
   <span class="emphasis">insert</span> n <span class="select">=</span> <span class="keyword">if</span> n < <span class="emphasis2">this</span>.val
                <span class="keyword">then</span> <span class="emphasis2">this</span>{left <span class="select">=</span> <span class="emphasis2">this</span>.left.insert n}
                <span class="keyword">else</span> <span class="emphasis2">this</span>{right <span class="select">=</span> <span class="emphasis2">this</span>.right.insert n},
   <span class="emphasis">show</span> <span class="select">=</span> <span class="emphasis2">this</span>.left.show;
          print (<span class="emphasis2">this</span>.val);
+         print <span class="literal">" "</span>;
          <span class="emphasis2">this</span>.right.show
 ]
 
