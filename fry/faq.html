@@ -46,10 +46,44 @@ In Simon Peyton Jones's <a href="http://homepages.cwi.nl/~jve/courses/12/esslli1
 
 <div class="text">
 So why bother?
+<ul>
+<li>
+  Fry is an experiment in declarative object-oriented programming. Note that it is <strong>not</strong> meant to be a multi-paradigm language. Let me explain.
+<p>
+Functional languages have a number of distinctive features. These are:
+<ul>
+  <li>first-class lambda expressions,</li>
+  <li>expression-based programming constructs (composition, preferably both functional and monadic),</li>
+  <li>(usually non-mutable) algebraic datatypes with pattern matching.</li>
+</ul>
+<p>
+Moreover, and more importantly, functional programming is a <strong>philosophy</strong> of programming, the way you think about a program. This means that (in contradiction to what you can read on Wikipedia), Java and C# are not functional languages, though they provide first-class lambda expressions!
+<p>
+The same holds for object-oriented (OO) languages, though it is harder to pinpoint the distinctive features, as there are a number of sub-genres. Let's take Ruby as an example. Its OO features are:
+<ul>
+  <li>objects,</li>
+  <li>mutable state,</li>
+  <li>classes with subtyping,</li>
+  <li>inheritance (as tool for implementation-sharing; the subtyping hierarchy can be disjoint from the inheritance hierachy).</li>  
+</ul>
+<p>
+Some people, like yours truly, are very fond of the elegance and expressiveness of functional languages, so they wish to share it with the OO community by creating multi-paradigm languages, which have the OO features plus the functional features. This creates a number of philosphical issues, because some of the OO features solve problems in a different way than functional features; take, for example, dynamic dispatch vs pattern matching.
+<p>
+The philosophy of Fry is to take only <strong>some</strong> features of functional languages and some of OO languages. We take dynamic dispatch, but no pattern matching; expression-based programming, but no mutable state. The case that Fry tries to support is that object-oriented programming is not necessarily imperative.
+</li>
+<li>
+  We need simple programming languages, and object-oriented languages tend to resemble the Kafkian bureaucracy: few have a real grasp of the enormity of the language and its semantics. XXX, the creator of Ruby, said: "Ruby is not simple, but it is notural". Not good enough! We want to do better! We can afford <strong>simple</strong> programming languages!
+<p>
+Easier say than done, one might accuse Fry, as it does not have all the features of a fully fledged programimng language: no modules, no strong type system, no support for concurrency, and so on. True, but these features are orthogonal to the problem in question, and these are not the sole reason why modern-day languages are so complicated.
+</li>
+<li>
+  The simplicity of Fry makes it interesting pedagogically. It distils the concept of object-oriented programming, and shows that it is orthogonal to imperative programming. Also, Fry's simple semantics makes it a good candidate to study semantics and implementation of programming languages.
+</li>
+</ul>
 </div>
 
 <h2>Why dynamic types?</h2>
-<div class="text">In reality, Fry is a functional language in disguise, and strong static type systems go well with functional languages. The reason why Fry is not strongly-typed is merely its under-development. This means that Fry will probably become strongly-typed at some point in the future.</div>
+<div class="text">In reality, Fry is a functional language in disguise, and strong static type systems go well with functional languages. The reason why Fry is not strongly-typed is merely its under-development. This means that Fry may become strongly-typed at some point in the future.</div>
 
 <h2>Why the name?</h2>
 <div class="text">Fry is a character in the TV show Futurama, who happens to be his own grandson (<a href="http://en.wikipedia.org/wiki/Roswell_That_Ends_Well" target="_blank">en.wikipedia.org/wiki/Roswell_That_Ends_Well</a>). It reflects the concept of <strong>circular inheritance</strong>, which is a distinctive feature of Fry.</div>

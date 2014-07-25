@@ -36,30 +36,12 @@
 <h1>Download Fry</h1>
 
 <div class="text">
-In <a href="http://github.com/maciejpirog/fry" target="_blank">Fry's github repository</a>, you will find a batch interpreter and a bit buggy emacs syntax highliting mode.
+See <a href="http://github.com/maciejpirog/fry" target="_blank">Fry's github repository</a>. The Fry project consists of the following parts, put in appropriate directories:
+<ul>
+<li><strong>interpreter</strong> - interactive interpreter written in Haskell (sources only, so you have to compile it yourself)</li>
+<li><strong>emacs-mode</strong> - a bit buggy syntax highliting mode for Fry (no support for running the interpreter within an emacs buffer yet, sorry!)</li>
+</ul>
 </div>
-
-<div class="text">
-The interpreter is written in Haskell, so you'll need a Haskell compiler. Any Haskell compiler would do, for example <a href="http://www.haskell.org/platform/" target="_blank">GHC</a>. Once you have GHC, download the sources, go to the "interpreter" directory, and type
-</div>
-
-<div class="fry">ghc --make -O2 Main -o fry
-</div>
-
-<div class="text">
-This will compile the interpreter and create an executable called "fry". Now, you can interpret a Fry file, like this:
-</div>
-
-<div class="fry">./fry my-program.fry
-</div>
-
-<div class="text">
-Try also the -v option for more verbose statistics:
-</div>
-
-<div class="fry">./fry -v my-program.fry
-</div>
-
 
 </div>
 </body>
