@@ -1,27 +1,33 @@
 body
 {
-  font-family: 'PT Sans Caption', sans-serif;
+  font-family: 'Mako', 'PT Sans Caption', sans-serif;
   font-size:17px;
   line-height:1.5;
-  color:#333333;
-  margin-bottom:5em;
+  %color:#333333;
+  color:black;
+  margin: 0 0 5em 0;
 }
 
 .main
 {
   max-width:40em;
+  max-width:45em;
   margin:2em auto 0 auto;
 }
 
 h1
 {
-  font-size:2em;
-  text-align:center;
+  font-size:2.25em;
+  %font-size:64px;
+  font-weight:400;
+  %text-align:center;
 }
 
 h2
 {
-  font-size:1.4em;
+  %font-size:1.4em;
+  font-size:1.5em;
+  font-weight:400;
   margin-top:1em;
 }
 
@@ -56,8 +62,17 @@ a:hover
 
 .pageheader
 {
+  %background-color:#fdfdef;
+  border-bottom:dashed 1px black;
+  %box-shadow: 1px 1px 20px #cccccc;
   text-align:center;
-  margin: 3em 0 1em 0;
+  padding: 1em 0 1em 0;
+  margin: 0 0 1em 0;
+}
+
+.logo
+{
+  padding: 0 0 1em 0;
 }
 
 .text
@@ -68,6 +83,14 @@ a:hover
 nav
 {
   text-align:center;
+}
+
+.submenu
+{
+  margin: 0 0 2em -1000px;
+  border-bottom: dashed 1px black;
+  display:inline-block;
+  padding-left:1000px;
 }
 
 
@@ -84,17 +107,21 @@ nav
 
 .fry
 {
-  background-color:#fdfdfd;
+  %background-color:#fdfdfd;
   font-family: 'PT Mono', monospace;
   white-space:pre;
+  display:block;
+
   padding:1em;
   padding-right:2em;
-  border-radius:3px;
-  border:1px solid #d0d0d0;
-  box-shadow: 1px 1px 4px #dddddd;
+
+  border:1px dashed black;
+
+  %border-radius:3px;
+  %border:1px solid #d0d0d0;
+  %box-shadow: 1px 1px 4px #dddddd;
   margin-bottom:1em;
-  display:inline-block;
-  display:block;
+
 }
 
 .fryin
@@ -148,10 +175,10 @@ nav
   padding:1em;
   margin-bottom:1em;
   line-height:2.5;
-  border-radius:3px;
+  %border-radius:3px;
   border:1px solid #d0d0d0;
   border-left:15px solid #d0d0d0;
-  box-shadow: 1px 1px 4px #dddddd;
+  %box-shadow: 1px 1px 4px #dddddd;
 }
 .smallmath
 {
