@@ -44,11 +44,6 @@ font-weight:bold;
   color:#333333;
 }
 
-strong
-{
-  color:black;
-}
-
 a
 {
   color:#4560f3;
@@ -62,7 +57,7 @@ a:hover
 
 .pageheader
 {
-  %background-color:#fdfdef;
+  %background-color:#f0f0f0;
   border-bottom:dashed 1px black;
   %box-shadow: 1px 1px 20px #cccccc;
   text-align:center;
@@ -177,7 +172,7 @@ nav
   line-height:2.5;
   %border-radius:3px;
   border:1px solid #d0d0d0;
-  border-left:15px solid #d0d0d0;
+  %border-left:15px solid #d0d0d0;
   %box-shadow: 1px 1px 4px #dddddd;
 }
 .smallmath

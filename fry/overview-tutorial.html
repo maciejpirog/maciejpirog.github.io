@@ -101,7 +101,7 @@ Fry is an <strong>expression-based</strong> language, which means that every pro
 
 
 <div class="text">
-Note that there is no distinction between fields and methods. Every field can access the whole object (by default, with the distinguished identifier "this"), as in the bmi field in the example above. <strong>Accessing</strong> a field is simply extraction of the element of the object, as in the following example:
+Note that there is no distinction between fields and methods. Every field can access the whole object (by default, with the distinguished identifier "this"), as in the "area" field in the example above. <strong>Accessing</strong> a field is simply extraction of the element of the object, as in the following example:
 </div>
 
 <div class="fry">[ <span class="emphasis">width</span> <span class="select">=</span> <span class="literal">3</span>,
@@ -161,7 +161,7 @@ The expression above evaluates to 100.
 <h2 id="fields">Fields</h2>
 
 <div class="text">
-Every field can access the whole object, dubbed "this", as in the "bmi" field in the previous examples. However, in the case of nested objects, we sometimes need to be explicit about which object we refer to. We can rename "this" to another identifier with the "@" (at) operator:
+Every field can access the whole object, dubbed "this", as in the "area" field in the previous examples. However, in the case of nested objects, we sometimes need to be explicit about which object we refer to. We can rename "this" to another identifier with the "@" (at) operator:
 </div>
 
 <div class="fry">[ <span class="emphasis">x</span> <span class="select">=</span> <span class="literal">2</span>,
@@ -547,7 +547,7 @@ p q         <span class="meta">~~~&gt;</span>  p{arg<span class="select"> = </sp
 </div>
 
 <div class="text">
-Since the update body is evaluated at the moment of the update, the reduction strategy for lambda-expressions is <strong>call-by-value</strong>. This means that at the application of a function to an argument, we first evaluate the arguments (in left-to-right order, beginning with the head of the application). For example, the following program prints out "1234":
+Since the update body is evaluated at the moment of the update, the reduction strategy for lambda-expressions is <strong>call-by-value</strong>. This means that at the application of a function to arguments, we first evaluate the arguments (in left-to-right order, beginning with the head of the application). For example, the following program prints out "1234":
 </div>
 
 <div class="fry">(print <span class="literal">1</span>; <span class="select">\</span>x y <span class="select">-></span> print <span class="literal">4</span>) (print <span class="literal">2</span>) (print <span class="literal">3</span>)
