@@ -54,7 +54,7 @@ Functional languages have a number of distinctive features. These are:
   <li>(usually non-mutable) algebraic datatypes with pattern matching.</li>
 </ul>
 <p>
-Moreover, and more importantly, functional programming is a <strong>philosophy</strong> of programming, the way you think about a program. This means that (in contradiction to what you can read on Wikipedia), Java and C# are not functional languages, though they provide first-class lambda expressions!
+Moreover, and more importantly, functional programming is a <strong>philosophy</strong> of programming, the way you think about a program. This means that (in contradiction to what you can read on Wikipedia) Java and C# are not functional languages, though they provide first-class lambda expressions!
 <p>
 The same holds for object-oriented (OO) languages, though it is harder to pinpoint the distinctive features, as there are a number of sub-genres. Let's take Ruby as an example. Its OO features are:
 <ul>
@@ -64,17 +64,17 @@ The same holds for object-oriented (OO) languages, though it is harder to pinpoi
   <li>inheritance (as tool for implementation-sharing; the subtyping hierarchy can be disjoint from the inheritance hierachy).</li>  
 </ul>
 <p>
-Some people, like yours truly, are very fond of the elegance and expressiveness of functional languages, so they wish to share it with the OO community by creating multi-paradigm languages, which have the OO features plus the functional features. This creates a number of philosphical issues, because some of the OO features solve problems in a different way than functional features; take, for example, dynamic dispatch vs pattern matching.
+Some people, like yours truly, are very fond of the elegance and expressiveness of functional languages, so they wish to share it with the OO community by creating multi-paradigm languages, which have the OO features plus the functional features. This creates a number of philosophical issues, because some of the OO features solve problems in a different way than functional features; take, for example, dynamic dispatch vs pattern matching.
 <p>
-The philosophy of Fry is to take only <strong>some</strong> features of functional languages and some of OO languages. We take dynamic dispatch, but no pattern matching; expression-based programming, but no mutable state. The case that Fry tries to support is that object-oriented programming is not necessarily imperative.
+The philosophy of Fry is to take only <strong>some</strong> features of functional languages and some of the traditional OO languages. Fry supports dynamic dispatch, but it doesn't support pattern matching; it is an expression-based language, but it is not imperative. The case that Fry tries to support is that object-oriented programming is not necessarily imperative.
 </li>
 <li>
-  We need simple programming languages, and object-oriented languages tend to resemble the Kafkian bureaucracy: few have a real grasp of the enormity of the language and its semantics. XXX, the creator of Ruby, said: "Ruby is not simple, but it is notural". Not good enough! We want to do better! We can afford <strong>simple</strong> programming languages!
+We need simple programming languages, and object-oriented languages tend to become Kafkianly bureaucratic: few have a real grasp of the enormity of the language and its semantics. Yukihiro "Matz" Matsumoto, the creator of Ruby, says he's "trying to make Ruby natural, not simple," and that "Ruby is simple in appearance, but is very complex inside" (see <a href="https://www.ruby-lang.org/en/about/" target="_blank">Ruby's website</a>). Not good enough! We can afford <strong>simple</strong> yet expressive programming languages!
 <p>
-Easier say than done, one might accuse Fry, as it does not have all the features of a fully fledged programimng language: no modules, no strong type system, no support for concurrency, and so on. True, but these features are orthogonal to the problem in question, and these are not the sole reason why modern-day languages are so complicated.
+Easier say than done, one might accuse Fry, as it does not have all the features of a fully fledged programming language: no modules, no strong type system, no support for concurrency, and so on. True, but these features are orthogonal to the problem in question, and they are not the sole reason why the modern-day OO languages tend to be so complicated.
 </li>
 <li>
-  The simplicity of Fry makes it interesting pedagogically. It distils the concept of object-oriented programming, and shows that it is orthogonal to imperative programming. Also, Fry's simple semantics makes it a good candidate to study semantics and implementation of programming languages.
+The simplicity of Fry makes it interesting pedagogically. It distils the concept of object-oriented programming, and shows that it is orthogonal to imperative programming. In the field of language design, Fry takes the moral high ground: it is built around a known and well-studied mathematical calculus. It aims at elegance and expressivity; only some practice will tell us whether it is anywhere near these goals.
 </li>
 </ul>
 </div>
