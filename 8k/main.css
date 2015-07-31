@@ -1,0 +1,174 @@
+body
+{
+background-color:#333333;
+background: url(bg.jpg) no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+font-family: 'Roboto Condensed', sans-serif;
+margin:0;
+}
+
+#loader
+{
+width:200px;
+position:fixed;
+left:50%;
+top:30%;
+margin: 0 0 0 -100px;
+z-index:11;
+background-color:black;
+color:#cccccc;
+font-size:1.2em;
+letter-spacing:3px;
+text-align:center;
+display:none;
+}
+
+#loader img
+{
+vertical-align:middle;
+margin:10px;
+}
+
+.info
+{
+z-index:10;
+position:fixed;
+width:200px;
+height:100%;
+display:inline-block;
+vertical-align: text-top;
+color:#cccccc;
+background:rgba(0,0,0,0.6);
+margin-right:15px;
+}
+
+h1
+{
+font-size:120px;
+text-align:center;
+margin-top:5px;
+margin-bottom:-10px;
+color:#8888bb;
+}
+
+a
+{
+color:#cccccc;
+text-decoration:none;
+}
+
+a:hover
+{
+color:#eeeeee;
+}
+
+.tab
+{
+margin:0 auto;
+display:block;
+padding-left:200px;
+max-width:950px;
+vertical-align: text-top;
+}
+
+.row
+{
+line-height: 0;
+font-size: 0;
+border-bottom:1px solid #555555;
+display:block;
+width:950px;
+}
+
+.minfo
+{
+border-bottom:1px solid #555555;
+width:950px;
+color:#cccccc;
+height:150px;
+}
+
+.minfob
+{
+display:inline-block;
+height:150px;
+vertical-align:text-top;
+}
+
+.minfobt
+{
+padding:5px;
+}
+
+.miname
+{
+margin-top:5px;
+xfont-size:1.2em;
+color:white;
+font-weight:bold;
+}
+
+.b
+{
+position:relative;
+margin:3px 1px;
+padding:7px 0;
+display:inline-block;
+font-size:16px;
+line-height:1em;
+border-radius:6px;
+}
+
+.tip
+{
+position:absolute;
+left:-90px;
+top:-150px;
+background-color:black;
+text-align:center;
+box-shadow:0px 0px 20px rgba(255,255,255,0.7);
+border-radius:2px;
+display:none;
+}
+
+.tip img
+{
+height:120px;
+}
+
+.d
+{
+width:60px;
+padding-left:10px;
+color:#cccccc;
+text-align:left;
+}
+
+.m
+{
+width:60px;
+color:#ccccff;
+color:#8888bb;
+text-align:center;
+cursor:default;
+}
+
+.sel
+{
+font-weight:bold;
+color:white;
+text-shadow: 0px 0px 5px #4444ff;
+}
+
+.v
+{
+width:60px;
+background-color:#6688aa;
+background-color:rgba(50,150,200,0.5);
+text-align:center;
+color:white;
+text-shadow: 0px 0px 5px #4444ff;
+}
