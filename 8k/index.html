@@ -1,31 +1,47 @@
 <html>
-  <head>
+<head>
 <link href="main.css" rel="stylesheet">
+<!-- -->
 <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+<!-- -->
 <meta charset="UTF-8">
 <title>8K</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+<script src="jquery-1.11.3.min.js"></script>
 </head>
-<body>
+<body style="background-color:black;">
 
-<div id="loader">
-<img src="loader.gif">
-</div>
+<div id="loader"><img src="loader.gif"></div>
 
 <div class="info">
 <a href="index.html"><h1><img src="8k.png"></h1></a>
 <ul>
-<li><a href="#bielecki" onclick="loaddata('bielecki');">Adam Bielecki</a>
-<li><a href="#czok" onclick="loaddata('czok');">Andrzej Czok</a>
-<li><a href="#hajzer" onclick="loaddata('hajzer');">Artur Hajzer</a>
-<li><a href="#kukuczka" onclick="loaddata('kukuczka');">Jurek Kukuczka</a>
-<li><a href="#kurtyka" onclick="loaddata('kurtyka');">Wojtek Kurtyka</a>
-<li><a href="#malek" onclick="loaddata('malek');">Artur Małek</a>
-<li><a href="#morawski" onclick="loaddata('morawski');">Piotr Morawski</a>
-<li><a href="#pustelnik" onclick="loaddata('pustelnik');">Piotr Pustelnik</a>
-<li><a href="#rutkiewicz" onclick="loaddata('rutkiewicz');">Wanda Rutkiewicz</a>
-<li><a href="#wielicki" onclick="loaddata('wielicki');">Krzysztof Wielicki</a>
+<li><a href="#baranowska">Kinga Baranowska</a>
+<li><a href="#berbeka">Maciej Berbeka</a>
+<li><a href="#bielecki">Adam Bielecki</a>
+<li><a href="#cichy">Leszek Cichy</a>
+<li><a href="#czerwinska">Anna Czerwińska</a>
+<li><a href="#czok">Andrzej Czok</a>
+<li><a href="#gajewski">Ryszard Gajewski</a>
+<li><a href="#golab">Janusz Gołąb</a>
+<li><a href="#hajzer">Artur Hajzer</a>
+<li><a href="#kaczkan">Marcin Kaczkan</a>
+<li><a href="#kowalski">Tomasz Kowalski</a>
+<li><a href="#kukuczka">Jurek Kukuczka</a>
+<li><a href="#kurtyka">Wojtek Kurtyka</a>
+<li><a href="#malek">Artur Małek</a>
+<li><a href="#morawski">Piotr Morawski</a>
+<li><a href="#pawlikowski">Maciej Pawlikowski</a>
+<li><a href="#pawlowski">Ryszard Pawłowski</a>
+<li><a href="#pustelnik">Piotr Pustelnik</a>
+<li><a href="#rutkiewicz">Wanda Rutkiewicz</a>
+<li><a href="#wielicki">Krzysztof Wielicki</a>
+<li><a href="#zaluski">Dariusz Załuski</a>
 </ul>
+</div>
+
+<div class="tab" id="start">
+
 </div>
 
 <div class="tab" id="k">
@@ -90,53 +106,60 @@ function showMDetail(x)
  );
 }
 
-var ps = ["EV", "K2", "KM", "LH", "MK", "CO", "DH", "MN", "NP", "AN", "G1", "BP", "G2", "SP"];
+var PEAKS = ["EV", "K2", "KM", "LH", "MK", "CO", "DH", "MN", "NP", "AN", "G1", "BP", "G2", "SP"];
 
-for (var j = 0; j <= ps.length - 1; j++)
+for (var j = 0; j <= PEAKS.length - 1; j++)
 {
-  showMDetail(ps[j]);
+  showMDetail(PEAKS[j]);
 }
 
-function addm(row, p, str)
+function createMs(row)
 {
-  var cl   = "m";
-  var cont = "&nbsp;";
-  var i = p.indexOf(str);
-  if (i >= 0)
+  for (var j = 0; j < PEAKS.length; j++)
   {
-    cl   = "v" + " " + str;
-    cont = "&#10003;";
-    $("#" + str).addClass("sel");
-  }
-
-  var b = document.createElement("span");
-  $(b).html(cont)
-      .addClass("b " + cl)
-      .appendTo(row);
+    var b = document.createElement("span");
+    $(b).html("&nbsp;")
+        .addClass("b cell " + PEAKS[j])
+        .appendTo(row);
+  }  
 }
 
-function addms(row, p)
+function createRows(data)
 {
-  for (var j = 0; j <= ps.length - 1; j++)
+  var currentYear = data[0].y - 1;
+  for (var i = 0; i < data.length; i++)
   {
-    addm(row, p, ps[j]);
-  }
+    if (data[i].y == currentYear) continue;
+    currentYear = data[i].y;
+    var ld = document.createElement("span");
+    $(ld).addClass("b d").html(data[i].y);
+    var r = document.createElement("div");
+    $(r).addClass("row dyn").attr("id",data[i].y).html(ld);
+    createMs(r);
+    $(r).appendTo("#k"); //.fadeIn(1000);
+  }  
 }
 
-function addrow(y,p)
+function fillTable(data)
 {
-  var d = document.createElement("span");
-  $(d).addClass("b d").html(y);
-  var r = document.createElement("div");
-  $(r).addClass("row dyn").html(d);
-  addms(r,p);
-  $(r).hide().appendTo("#k").fadeIn(1000);
+  for (var i = 0; i < data.length; i++)
+  {
+    var d = data[i];
+    var addr = "#" + d.y + " ." + d.p;
+    $(addr).html("&#10003;").addClass("s");
+    if (d.hasOwnProperty("a"))
+    {
+      $(addr).addClass(d.a);
+      if (d.a.indexOf("w") >= 0) $(addr).html("&#x2744;");
+    }
+    $("#" + d.p).addClass("sel");
+  }
 }
 
 function adddata(x)
 {
- $('#cimg').on('load', function(){
-      $('#loader').fadeOut(250);
+  $('#cimg').on('load', function(){
+      //$('#loader').fadeOut();
       $('#minfocontainer').fadeIn();
       $('#cimg').fadeIn();
     });
@@ -147,32 +170,39 @@ function adddata(x)
   $('#cname').html(x.name);
   $('#cinfo').html(x.desc);
   $('#cimg').attr('src', x.sname + '.jpg');
-  $('.dyn').remove();
-  $('.sel').removeClass('sel');
   var data = x.data;
   data.sort(function(b, a){return b.y - a.y});
-  for (var i = 0; i <= data.length - 1; i++)
-  {
-    addrow(data[i].y, data[i].p);
-  }
-  for (var j = 0; j <= ps.length - 1; j++)
-  {
-    showMDetail(ps[j]);
-  }
+  if (data.length == 0) return;
+  createRows(data);
+  fillTable(data);
 }
 
 function loaddata(name)
 {
-  $('#loader').fadeIn(500);
+  //$('#loader').fadeIn();
+  $('.tab').hide();
+  $('.dyn').remove();
+  $('.sel').removeClass('sel');
   jQuery.getScript(name + '.js');
+  $('#k').fadeIn(500);
   return true;
 }
 
-$(function() {
-  var climber = window.location.hash.substr(1);
-  if (climber != '')
-    loaddata(climber);
+function enter()
+{
+  var hash = window.location.hash.substr(1);
+  if (hash != '')
+    loaddata(hash);  
+}
+
+$(window).on('hashchange', enter);
+
+$(enter);
+
+$(window).load(function() {
+  $('#loader').fadeOut();
 });
+
 </script>
 
 

@@ -14,15 +14,15 @@ margin:0;
 {
 width:100px;
 position:fixed;
-left:60%;
+left:50%;
 top:0;
-margin: 0 0 0 -50px;
+margin: 0px 0 0 -50px;
 z-index:11;
 color:#cccccc;
 font-size:1.2em;
 letter-spacing:3px;
 text-align:center;
-display:none;
+display:block;
 }
 
 #loader img
@@ -73,6 +73,11 @@ max-width:950px;
 vertical-align: text-top;
 }
 
+#k
+{
+display:none;
+}
+
 .row
 {
 line-height: 0;
@@ -117,7 +122,7 @@ margin:3px 1px;
 padding:7px 0;
 display:inline-block;
 font-size:16px;
-line-height:1em;
+line-height:16px;
 border-radius:6px;
 }
 
@@ -162,12 +167,25 @@ color:white;
 text-shadow: 0px 0px 5px #4444ff;
 }
 
-.v
+.cell
 {
+position:relative;
 width:60px;
-background-color:#6688aa;
-background-color:rgba(50,150,200,0.5);
 text-align:center;
+cursor:default;
+}
+
+.s
+{
+background-color:rgba(50,150,200,0.5);
 color:white;
 text-shadow: 0px 0px 5px #4444ff;
+}
+
+.w
+{
+background-color:rgba(190,190,220,0.7);
+color:white;
+text-shadow: 0px 0px 7px white;
+box-shadow: 0px 0px 10px rgba(50,150,200,1);
 }
