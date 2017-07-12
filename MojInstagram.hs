@@ -21,3 +21,14 @@ transformBMP input trans output = do
   writeBitmap output img'
 
 inB n = if n < 0 then 0 else if n > 255 then 255 else n
+
+-- PRZYKŁADOWE FILTRY
+
+invert _ _ _ _ (r,g,b) = (255-r,255-g,255-b)
+
+toGS _ _ _ _ (r,g,b) = (c,c,c)
+ where
+  c = (299*r + 587*g + 114*b) `div` 1000
+
+onlyRed _ _ _ _ (r,g,b) = (r,0,0)
+
