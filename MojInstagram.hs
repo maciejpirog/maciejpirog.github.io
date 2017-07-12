@@ -9,8 +9,9 @@ type Width = Int
 type Height = Int
 type X = Int
 type Y = Int
+type Filter = Width -> Height -> X -> Y -> (Int, Int, Int) -> (Int, Int, Int)
 
-transformBMP :: FilePath -> (Width -> Height -> X -> Y -> (Int, Int, Int) -> (Int, Int, Int)) -> FilePath -> IO ()
+transformBMP :: FilePath -> Filter -> FilePath -> IO ()
 transformBMP input trans output = do
   Right (ImageRGB8 img, meta) <- readImageWithMetadata input
   let w = fromIntegral (fromJust (MD.lookup MD.Width meta))
@@ -22,7 +23,12 @@ transformBMP input trans output = do
 
 inB n = if n < 0 then 0 else if n > 255 then 255 else n
 
--- PRZYKŁADOWE FILTRY
+--- NAKLADANIE FILTROW
+
+(+++) :: Filter -> Filter -> Filter
+(f +++ g) w h x y c = g w h x y (f w h x y c)
+
+-- PRZYKLADOWE FILTRY
 
 invert _ _ _ _ (r,g,b) = (255-r,255-g,255-b)
 
@@ -32,3 +38,4 @@ toGS _ _ _ _ (r,g,b) = (c,c,c)
 
 onlyRed _ _ _ _ (r,g,b) = (r,0,0)
 
+-- wywolanie: transformBMP "cat.bmp" (invert +++ onlyRed) "cat-filtered.bmp"
