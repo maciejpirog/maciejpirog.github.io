@@ -1,46 +1,44 @@
+html
+{
+overflow-y:scroll;
+}
+
 body
 {
-font-family: 'Source Sans Pro', sans-serif;
-color:#333333;
+font-size:12pt;
+font-family: 'Open Sans', sans-serif;
+color:#1d2731;
 margin: 0px 0px;
 padding: 0px 0px;
+background-color:#ddd;
+}
+::selection
+{
+background-color:#328cc1;
+color:white;
 }
 
-h1
+.all
 {
-margin-bottom:0.5em;
-}
-
-h3
-{
-font-size:1em;
-font-weight:bold;
-margin:0 0 0.5em 0;
-}
-
-a
-{
-text-decoration:none;
-color:#4A96AD;
-color:#C63D0F;
-}
-
-a:hover
-{
-color:#f67D4F;
+max-width:1000px;
+margin:0px auto;
+background-color:white;
 }
 
 .navbar
 {
-background-color:#F5F3EE;
+background-color:#1d2731;
 width:100%;
 padding:0px 0px;
 font-size:1.0em;
 display:block;
-position:fixed;
+xxx-position:fixed;
 top:0px;
 }
-
+@media screen and (max-width: 445px)
+{
+ .navbar { xxx-position:absolute; }
+}
 .navbararea
 {
 max-width:1000px;
@@ -48,74 +46,160 @@ margin:0px auto;
 display:block;
 text-align:left;
 }
-
-.navbartitle
-{
-margin-right:50px;
-}
-
 .menuitem
 {
 display:inline-block;
-padding:10px 15px;
-margin:0px 20px 0 0;
-color:#333333;
+padding:15px 20px;
+xxx-margin:0px 20px 0 0;
+color:#eeeeee;
+}
+.menuitem:hover
+{
+color:#92ccf1;
 }
 .active
 {
-xcolor:#C63D0F;
-xborder-bottom:solid 2px #C63D0F;
-background-color:#C63D0F;
+background-color:#328cc1;
 color:white;
 }
 .active:hover
 {
-background-color:#C63D0F;
 color:white;
+}
+
+.header-small{
+padding-top:4em;
+padding-bottom:1em;
+padding-left:0em;
+background-color:#d9b310;
+text-align:center;
+}
+
+a, .fl
+{
+color:#0b3c5d;
+color:#328cc1;
+text-decoration:none;
+cursor:pointer;
+}
+a:hover, .fl:hover
+{
+color:#bb4c6d;
 }
 
 .cont
 {
 max-width:1000px;
 margin:0px auto;
-padding:5px 5px;
+padding:1em 40px;
+text-align:left;
+background-color:white;
 }
 
-.infobox
+h1
 {
-}
-.contactbox
-{
-margin-top:0.5em;
-}
-.label
-{
-background-color:#F5F3EE;
-width:4em;
-display:inline-block;
-text-align:right;
-padding:0px 6px;
-margin-right:6px;
-}
-
-.addrline
-{
+font-family: 'Bitter', serif;
+font-size:37pt;
+margin:0em;
+padding-top:1em;
 padding-bottom:0.5em;
 }
 
-.below
+h2
+{
+font-family: 'Bitter', serif;
+font-size:21pt;
+padding:0.5em 0 0.25em 0;
+margin:0em;
+}
+
+h3
+{
+font-family: 'Bitter', serif;
+font-size:16pt;
+padding:0.5em 0 0.25em 0;
+margin:0em;
+}
+
+
+.header
+{
+text-align:center;
+background-color:#d9b310;
+height:300px;
+display:flex;
+height:300px;
+overflow:hidden;
+}
+.header-txt
+{
+    padding:30px;
+    overflow:hidden;
+    
+}
+.header a
+{
+color:#0b3c5d;
+}
+.header a:hover
+{
+color:#bb4c6d;
+}
+.jobdesc
+{
+    overflow:hidden;
+}
+@media screen and (max-width: 400px)
+{
+    h1 { font-size:21pt; }
+}
+@media screen and (max-width: 700px)
+{
+    .header-img { display:none; }
+    .header { height:200px; }
+}
+@media screen and (max-width: 840px)
+{
+     h1 { padding-top:0.2em; }
+}
+.narrow
+{
+max-width:700px;
+}
+
+.clear
 {
 clear:both;
 }
 
-.news
+.infobox
+{
+text-align:left;
+xbackground-color:#1d2731;
+display:inline-block;
+margin-right:1em;
+xcolor:white;
+margin-bottom:0.5em;
+border-top:1px solid #1d2731;
+border-bottom:1px solid #1d2731;
+padding:4px;
+}
+.infobox-title
 {
 display:inline-block;
-width:39%;
-margin:0px 0px;
-padding:0px 0px;
-vertical-align: text-top;
+xbackground-color:#328cc1;
+xtext-align:center;
+font-weight:bold;
+padding-right:1em;
+vertical-align:text-top;
 }
+.infobox-content
+{
+display:inline-block;
+xpadding:1em;
+vertical-align:text-top;
+}
+
 .newslist
 {
 padding:0 1.5em;
@@ -125,42 +209,68 @@ padding:0 1.5em;
 margin-bottom:0.5em;
 }
 
-.about
+.pubs
 {
-display:inline-block;
-margin:0px 0px;
-padding:0px 0px;
-width:59%;
-vertical-align: text-top;
+list-style-type:none;
+padding:0 0em;
 }
-
 .pubs li
 {
-margin-bottom:0.5em;
+margin-bottom:1em;
+border-left:solid 5px #328cc1;
+padding-left:0.5em;
+xbackground-color:#d9b310;
 }
-
 .ptitle
 {
 display:block;
 font-weight:bold;
 }
-
 .ptitle a
 {
-color:#333333;
+color:#1d2731;
 }
-
 .pauthors
 {
 display:block;
 }
-
 .pvenue
 {
 display:block;
 }
-
 .plinks
 {
 display:block;
+}
+.bib
+{
+margin-top:3px;
+font-family: monospace;
+white-space: pre-wrap;
+background-color:#3a3c41;
+color:#F5F3EE;
+padding:0.5em;
+display:none;
+}
+.bibactive
+{
+background-color:#328cc1;
+color:white;
+padding:0 10px;
+}
+.bibactive:hover
+{
+color:white;
+}
+
+.fotox
+{
+width:100%;
+}
+.xcd
+{
+width:50%;
+display:inline-block;
+text-align:center;
+margin-bottom:2em;
 }
