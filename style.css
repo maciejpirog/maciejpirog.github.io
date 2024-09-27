@@ -127,15 +127,21 @@ margin:0em;
 text-align:center;
 background-color:#d9b310;
 height:300px;
-display:flex;
-height:300px;
+xdisplay:flex;
+xheight:300px;
 overflow:hidden;
 }
 .header-txt
 {
     padding:30px;
     overflow:hidden;
+    display: inline-block;
     
+}
+.header-img
+{
+    float: right;
+    height:300px;
 }
 .header a
 {
@@ -177,12 +183,13 @@ clear:both;
 text-align:left;
 xbackground-color:#1d2731;
 display:inline-block;
-margin-right:1em;
+margin-right:2em;
 xcolor:white;
 margin-bottom:0.5em;
-border-top:1px solid #1d2731;
-border-bottom:1px solid #1d2731;
-padding:4px;
+border-left:1px solid #1d2731;
+padding-left:1em;
+xborder-bottom:1px solid #1d2731;
+padding-right:4px;
 }
 .infobox-title
 {
